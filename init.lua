@@ -10,29 +10,37 @@ vim.o.undofile = true
 vim.o.backupdir = vim.env.HOME .. '/nvim/backup//'
 vim.o.directory = vim.env.HOME .. '/nvim/swap//'
 vim.o.undodir = vim.env.HOME .. '/nvim/undo//'
-vim.o.autochdir = true
+-- vim.o.autochdir = true
 
 
 require('packer_nvim')
 require('keymappings')
---require('completion')
+require('completion')
 
 require('nvim-treesitter.configs').setup {
 	highlight = {
 		enable = true,
 		disable = {}
 	},
-	indent = {
-		enable = true,
-		disable = {}
-	},
+	-- indent = {
+	-- 	enable = true,
+	-- 	disable = {}
+	-- },
 	ensure_installed = {
 		"lua",
 		"python",
+        "typescript",
+        "html",
+        "javascript",
 	},
 }
 
+require'telescope'.setup{
+    defaults = { file_ignore_patterns = {"node_modules/.*",}}
+}
+
 local lsp_installer = require("nvim-lsp-installer")
+-- You should install for each language server manually with :LspInstall
 
 -- Register a handler that will be called for each installed server when it's ready (i.e. when installation is finished
 -- or if the server is already installed).

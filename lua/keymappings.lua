@@ -28,5 +28,6 @@ wk.register({
         a = {'<cmd>lua vim.lsp.buf.code_action()<CR>', 'code action'},
         r = {'<cmd>lua vim.lsp.buf.references()<CR>', 'references'},
         f = {'<cmd>lua vim.lsp.buf.formatting()<CR>', 'formatting'},
+        c = {'<cmd>lua vim.lsp.buf.code_action()<cr>', 'code action'},
     },
 }, { prefix = "<leader>" })
