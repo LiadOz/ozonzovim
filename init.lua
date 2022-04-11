@@ -36,9 +36,16 @@ require('nvim-treesitter.configs').setup {
 }
 
 require'telescope'.setup{
-    defaults = { file_ignore_patterns = {"node_modules/.*",}}
+    defaults = { file_ignore_patterns = {"node_modules/.*", "__pycache__/.*"}}
 }
 
+require('project_nvim').setup{}
+
+require('lspconfig').pylsp.setup{
+}
+require('telescope').load_extension('projects')
+
+local projects_dirs = require('projects')
 local lsp_installer = require("nvim-lsp-installer")
 -- You should install for each language server manually with :LspInstall
 
@@ -51,6 +58,18 @@ lsp_installer.on_server_ready(function(server)
     -- if server.name == "tsserver" then
     --     opts.root_dir = function() ... end
     -- end
+    if server.name == 'pylsp' then
+        local orig_config = require('lspconfig.server_configurations.pylsp')
+        local orig_root_dir = orig_config['default_config']['root_dir']
+        opts.root_dir = function (fname)
+            for _, value in pairs(projects_dirs) do
+                if fname:find(value) then
+                    return value
+                end
+            end
+            return orig_root_dir(fname)
+        end
+    end
 
     -- This setup() function will take the provided server configuration and decorate it with the necessary properties
     -- before passing it onwards to lspconfig.

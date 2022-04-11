@@ -18,6 +18,7 @@ wk.register({
         b = {"<cmd>lua require('telescope.builtin').buffers()<cr>", 'buffers'},
         h = {"<cmd>lua require('telescope.builtin').help_tags()<cr>", 'help'},
         r = {"<cmd>lua require('telescope.builtin').oldfiles()<cr>", 'recent files'},
+        o = {"<cmd>Telescope projects<cr>", 'projects'},
     },
     c = {
         name = 'code+',

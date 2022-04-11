@@ -25,6 +25,7 @@ return require('packer').startup(function(use)
     use 'neovim/nvim-lspconfig'
     use 'williamboman/nvim-lsp-installer'
     use 'nvim-treesitter/nvim-treesitter'
+    use 'ahmedkhalf/project.nvim'
 
     --------------------------------------
     -- completion plugins
