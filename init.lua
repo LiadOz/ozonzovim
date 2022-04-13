@@ -10,7 +10,7 @@ vim.o.undofile = true
 vim.o.backupdir = vim.env.HOME .. '/nvim/backup//'
 vim.o.directory = vim.env.HOME .. '/nvim/swap//'
 vim.o.undodir = vim.env.HOME .. '/nvim/undo//'
--- vim.o.autochdir = true
+vim.o.autochdir = true
 
 
 require('packer_nvim')
@@ -36,13 +36,16 @@ require('nvim-treesitter.configs').setup {
 }
 
 require'telescope'.setup{
-    defaults = { file_ignore_patterns = {"node_modules/.*", "__pycache__/.*"}}
+    defaults = {
+        file_ignore_patterns = {"node_modules/.*", "__pycache__/.*", "^env/.*", "/env/.*", "build/.*"},
+    }
 }
 
-require('project_nvim').setup{}
-
-require('lspconfig').pylsp.setup{
+require('project_nvim').setup{
+    patterns = { ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json", ".project" },
+    silent_chdir = false,
 }
+
 require('telescope').load_extension('projects')
 
 local projects_dirs = require('projects')
@@ -54,10 +57,6 @@ local lsp_installer = require("nvim-lsp-installer")
 lsp_installer.on_server_ready(function(server)
     local opts = {}
 
-    -- (optional) Customize the options passed to the server
-    -- if server.name == "tsserver" then
-    --     opts.root_dir = function() ... end
-    -- end
     if server.name == 'pylsp' then
         local orig_config = require('lspconfig.server_configurations.pylsp')
         local orig_root_dir = orig_config['default_config']['root_dir']
@@ -69,6 +68,12 @@ lsp_installer.on_server_ready(function(server)
             end
             return orig_root_dir(fname)
         end
+    elseif server.name == 'sumneko_lua' then
+        opts.settings = {
+            Lua = {
+                diagnostics = { globals = {'vim'} }
+            }
+        }
     end
 
     -- This setup() function will take the provided server configuration and decorate it with the necessary properties
