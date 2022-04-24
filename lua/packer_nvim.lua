@@ -27,6 +27,10 @@ return require('packer').startup(function(use)
     use 'nvim-treesitter/nvim-treesitter'
     use 'ahmedkhalf/project.nvim'
 
+    use 'tpope/vim-fugitive'
+    use 'airblade/vim-gitgutter'
+    use 'f-person/git-blame.nvim'
+
     --------------------------------------
     -- completion plugins
     use 'hrsh7th/cmp-nvim-lsp'
