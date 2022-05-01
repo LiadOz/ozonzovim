@@ -33,6 +33,10 @@ return require('packer').startup(function(use)
     use 'airblade/vim-gitgutter'
     use 'f-person/git-blame.nvim'
 
+    use 'tpope/vim-fugitive'
+    use 'airblade/vim-gitgutter'
+    use 'f-person/git-blame.nvim'
+
     --------------------------------------
     -- completion plugins
     use 'hrsh7th/cmp-nvim-lsp'
