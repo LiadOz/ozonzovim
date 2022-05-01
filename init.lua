@@ -40,17 +40,19 @@ require('nvim-treesitter.configs').setup {
 require'telescope'.setup{
     defaults = {
         file_ignore_patterns = {"node_modules/.*", "__pycache__/.*", "^env/.*", "/env/.*", "build/.*"},
+        layout_strategy = 'center',
+        layout_config = { width = 0.8 },
     },
     pickers = {
-        find_files = {
-            theme = "dropdown"
-        },
-        grep_string = {
-            theme = "dropdown"
-        },
-        live_grep = {
-            theme = "dropdown"
-        },
+        -- find_files = {
+        --     theme = "dropdown"
+        -- },
+        -- grep_string = {
+        --     theme = "dropdown"
+        -- },
+        -- live_grep = {
+        --     theme = "dropdown"
+        -- },
     }
 }
 

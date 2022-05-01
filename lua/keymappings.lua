@@ -14,6 +14,7 @@ wk.register({
     f = {
         name = 'find+',
         f = {"<cmd>lua require('telescope.builtin').find_files()<cr>", 'find files'},
+        s = {"<cmd>lua require('telescope.builtin').resume()<cr>", 'resume last'},
         g = {"<cmd>lua require('telescope.builtin').live_grep()<cr>", 'grep'},
         c = {"<cmd>lua require('telescope.builtin').grep_string()<cr>", 'grep cursor'},
         p = {"<cmd>lua require('telescope.builtin').git_files()<cr>", 'project'},
