@@ -1,21 +1,22 @@
 local wk = require('which-key')
 
 wk.register({
-    ["<TAB>"] = {':bnext<cr>', 'next buffer'},
+    ["<TAB>"] = {':b#<cr>', 'prev buffer'},
     [" "] = {':HopChar2<cr>', 'jump2'},
     b = {
         name = 'buffer+',
         n = {':bnext<cr>', 'next buffer'},
         p = {':bprev<cr>', 'previous buffer'},
-        d = {':bdelete<cr>', 'delete buffer'},
+        d = {':Bdelete<cr>', 'delete buffer'},
+        D = {':Bdelete!<cr>', 'delete buffer no save'},
+        b = {"<cmd>lua require('telescope.builtin').buffers()<cr>", 'buffers'},
     },
     f = {
         name = 'find+',
         f = {"<cmd>lua require('telescope.builtin').find_files({hidden=true})<cr>", 'find files'},
         g = {"<cmd>lua require('telescope.builtin').live_grep()<cr>", 'grep'},
-        c = {"<cmd>lua require('telescope.builtin').grep_string()<cr>", 'grep'},
+        c = {"<cmd>lua require('telescope.builtin').grep_string()<cr>", 'grep cursor'},
         p = {"<cmd>lua require('telescope.builtin').git_files()<cr>", 'project'},
-        b = {"<cmd>lua require('telescope.builtin').buffers()<cr>", 'buffers'},
         h = {"<cmd>lua require('telescope.builtin').help_tags()<cr>", 'help'},
         r = {"<cmd>lua require('telescope.builtin').oldfiles()<cr>", 'recent files'},
         o = {"<cmd>Telescope projects<cr>", 'projects'},

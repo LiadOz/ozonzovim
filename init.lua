@@ -22,16 +22,18 @@ require('nvim-treesitter.configs').setup {
 		enable = true,
 		disable = {}
 	},
-	-- indent = {
-	-- 	enable = true,
-	-- 	disable = {}
-	-- },
+	--indent = {
+	--	enable = true,
+	--	disable = {}
+	--},
 	ensure_installed = {
 		"lua",
 		"python",
         "typescript",
         "html",
         "javascript",
+        'tsx',
+        'scss',
 	},
 }
 

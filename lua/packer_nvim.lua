@@ -26,6 +26,8 @@ return require('packer').startup(function(use)
     use 'williamboman/nvim-lsp-installer'
     use 'nvim-treesitter/nvim-treesitter'
     use 'ahmedkhalf/project.nvim'
+    use 'famiu/bufdelete.nvim'
+    use 'jiangmiao/auto-pairs'
 
     --------------------------------------
     -- completion plugins
