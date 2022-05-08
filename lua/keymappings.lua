@@ -43,5 +43,9 @@ wk.register({
     g = {
         name = 'git+',
         b = {':Git blame --date short --color-by-age<cr>', 'blame'},
+    },
+    t = {
+        name = 'toggle+',
+        u = {':UndotreeToggle<cr>', 'undo tree'}
     }
 }, { prefix = "<leader>" })

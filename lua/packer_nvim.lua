@@ -22,6 +22,8 @@ return require('packer').startup(function(use)
         'nvim-telescope/telescope.nvim',
         requires = { {'nvim-lua/plenary.nvim'} }
     }
+    use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
+
     use 'neovim/nvim-lspconfig'
     use 'williamboman/nvim-lsp-installer'
     use 'nvim-treesitter/nvim-treesitter'
@@ -31,11 +33,7 @@ return require('packer').startup(function(use)
 
     use 'tpope/vim-fugitive'
     use 'airblade/vim-gitgutter'
-    use 'f-person/git-blame.nvim'
-
-    use 'tpope/vim-fugitive'
-    use 'airblade/vim-gitgutter'
-    use 'f-person/git-blame.nvim'
+    use 'mbbill/undotree'
 
     --------------------------------------
     -- completion plugins
