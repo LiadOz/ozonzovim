@@ -1,6 +1,6 @@
 local wk = require('which-key')
 
-wk.register({
+local mappings = {
     ["<TAB>"] = {':b#<cr>', 'prev buffer'},
     [" "] = {':HopChar2<cr>', 'jump2'},
     b = {
@@ -47,5 +47,13 @@ wk.register({
     t = {
         name = 'toggle+',
         u = {':UndotreeToggle<cr>', 'undo tree'}
+    },
+    e = {
+        name = 'edit+',
+        c = {'<plug>NERDCommenterToggle', 'comment'},
+        s = {'<plug>NERDCommenterSexy', 'sexy comment'},
+        y = {'<plug>NERDCommenterYank', 'comment yank'},
     }
-}, { prefix = "<leader>" })
+}
+wk.register(mappings, { prefix = "<leader>" })
+wk.register(mappings, { mode = "v", prefix = "<leader>" })

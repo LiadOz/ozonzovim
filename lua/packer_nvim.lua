@@ -34,6 +34,13 @@ return require('packer').startup(function(use)
     use 'tpope/vim-fugitive'
     use 'airblade/vim-gitgutter'
     use 'mbbill/undotree'
+    use {
+        'preservim/nerdcommenter',
+        config = function()
+            vim.g.NERDCreateDefaultMappings = 0
+        end
+    }
+
 
     --------------------------------------
     -- completion plugins
