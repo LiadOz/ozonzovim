@@ -1,7 +1,9 @@
+require('packer_nvim')
+require('keymappings')
+
 vim.g.mapleader = ' '
 vim.wo.relativenumber = true
 vim.wo.colorcolumn = '80'
-vim.cmd('colorscheme duskfox')
 vim.o.timeoutlen= 500
 vim.o.number = true
 vim.o.backup = true
@@ -11,10 +13,9 @@ vim.o.backupdir = vim.env.HOME .. '/nvim/backup//'
 vim.o.directory = vim.env.HOME .. '/nvim/swap//'
 vim.o.undodir = vim.env.HOME .. '/nvim/undo//'
 vim.o.autochdir = true
+vim.o.updatetime = 1000
+vim.cmd('colorscheme duskfox')
 
-
-require('packer_nvim')
-require('keymappings')
 require('completion')
 
 require('nvim-treesitter.configs').setup {
@@ -107,3 +108,8 @@ lsp_installer.on_server_ready(function(server)
     -- Refer to https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
     server:setup(opts)
 end)
+
+vim.api.nvim_create_autocmd({"CursorHold"}, {
+    pattern = "*",
+    callback = vim.lsp.buf.hover
+})
