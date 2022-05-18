@@ -46,7 +46,10 @@ return require('packer').startup(function(use)
             require('fidget').setup{}
         end
     }
-
+    use {
+        'jose-elias-alvarez/null-ls.nvim',
+        requires = { {'nvim-lua/plenary.nvim'} }
+    }
 
 
     --------------------------------------

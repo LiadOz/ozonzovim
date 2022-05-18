@@ -57,7 +57,7 @@ telescope.setup{
         -- },
     }
 }
---telescope.load_extension('fzf')
+telescope.load_extension('fzf')
 
 require('project_nvim').setup{
     patterns = { ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json", ".project" },
@@ -112,4 +112,9 @@ end)
 vim.api.nvim_create_autocmd({"CursorHold"}, {
     pattern = "*",
     callback = vim.lsp.buf.hover
+})
+require('null-ls').setup({
+    sources = {
+        require('null-ls').builtins.diagnostics.pylint,
+    }
 })
