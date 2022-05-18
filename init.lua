@@ -14,6 +14,7 @@ vim.o.directory = vim.env.HOME .. '/nvim/swap//'
 vim.o.undodir = vim.env.HOME .. '/nvim/undo//'
 vim.o.autochdir = true
 vim.o.updatetime = 1000
+vim.o.autoread = true
 vim.cmd('colorscheme duskfox')
 
 require('completion')

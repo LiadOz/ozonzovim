@@ -51,6 +51,8 @@ return require('packer').startup(function(use)
         requires = { {'nvim-lua/plenary.nvim'} }
     }
 
+    use 'preservim/nerdtree'
+    use 'djoshea/vim-autoread'
 
     --------------------------------------
     -- completion plugins
@@ -81,4 +83,8 @@ return require('packer').startup(function(use)
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
+
+    use 'ryanoasis/vim-devicons' -- dev-icons is suggested being run last
+    -- make sure you have a patched font https://github.com/ryanoasis/nerd-fonts
+
 end)
