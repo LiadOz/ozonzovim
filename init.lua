@@ -3,7 +3,6 @@ require('keymappings')
 
 vim.g.mapleader = ' '
 vim.wo.relativenumber = true
-vim.wo.colorcolumn = '80'
 vim.o.timeoutlen= 500
 vim.o.number = true
 vim.o.backup = true
@@ -15,6 +14,7 @@ vim.o.undodir = vim.env.HOME .. '/nvim/undo//'
 vim.o.autochdir = true
 vim.o.updatetime = 1000
 vim.o.autoread = true
+vim.o.laststatus = 3
 vim.cmd('colorscheme duskfox')
 
 require('completion')
@@ -91,12 +91,17 @@ lsp_installer.on_server_ready(function(server)
         local orig_root_dir = orig_config['default_config']['root_dir']
         opts.root_dir = function (fname)
             for _, value in pairs(projects_dirs) do
+                -- doesn't work as intedned due to null ls see comment
                 if fname:find(value) then
+                    print(value)
                     return value
                 end
             end
             return orig_root_dir(fname)
         end
+        opts.handlers = {
+            ['textDocument/publishDiagnostics'] = function(...) end
+        }
     elseif server.name == 'sumneko_lua' then
         opts.settings = {
             Lua = {
@@ -115,7 +120,15 @@ vim.api.nvim_create_autocmd({"CursorHold"}, {
     callback = vim.lsp.buf.hover
 })
 require('null-ls').setup({
+    -- note that this also changes root dir so now the root dir will be of the file but will have 2 workspaces
+    -- this is a bug but I actually wanted to have this feature so I don't care
     sources = {
         require('null-ls').builtins.diagnostics.pylint,
     }
 })
+
+require('lualine').setup{}
+
+vim.diagnostic.config{
+    signs=false,
+}
