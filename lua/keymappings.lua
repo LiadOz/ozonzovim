@@ -54,6 +54,9 @@ local mappings = {
         c = {'<plug>NERDCommenterToggle', 'comment'},
         s = {'<plug>NERDCommenterSexy', 'sexy comment'},
         y = {'<plug>NERDCommenterYank', 'comment yank'},
+    },
+    o = {
+        name = 'other+',
     }
 }
 wk.register(mappings, { prefix = "<leader>" })

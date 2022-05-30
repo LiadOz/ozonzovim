@@ -58,6 +58,13 @@ return require('packer').startup(function(use)
         requires = { 'kyazdani42/nvim-web-devicons', opt = true }
     }
 
+    use 'rcarriga/nvim-notify'
+    use 'nvim-treesitter/playground'
+    use {
+        'catppuccin/nvim',
+        name = 'catppuccin'
+    }
+
     --------------------------------------
     -- completion plugins
     use 'hrsh7th/cmp-nvim-lsp'
