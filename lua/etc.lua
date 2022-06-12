@@ -22,9 +22,9 @@ local telescope = require('telescope')
 local action_layout = require("telescope.actions.layout")
 telescope.setup{
     defaults = {
-        file_ignore_patterns = {"node_modules/.*", "__pycache__/.*", "^env/.*", "/env/.*", "build/.*"},
-        layout_strategy = 'center',
-        layout_config = { width = 0.8 },
+        file_ignore_patterns = {"node_modules/.*", "__pycache__/.*", ".env/.*", "env/.*", "build/.*"},
+        layout_strategy = 'vertical',
+        layout_config = { width = 0.7 },
     },
     mappings = {
         i = {
@@ -47,6 +47,7 @@ telescope.load_extension('fzf')
 
 require('project_nvim').setup{
     patterns = { ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json", ".project" },
+    detection_methods = {'pattern', 'lsp'},
 }
 
 telescope.load_extension('projects')
