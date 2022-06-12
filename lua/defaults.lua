@@ -8,7 +8,6 @@ vim.o.undofile = true
 vim.o.backupdir = vim.env.HOME .. '/nvim/backup//'
 vim.o.directory = vim.env.HOME .. '/nvim/swap//'
 vim.o.undodir = vim.env.HOME .. '/nvim/undo//'
-vim.o.autochdir = true
 vim.o.updatetime = 2000
 vim.o.autoread = true
 vim.o.laststatus = 3

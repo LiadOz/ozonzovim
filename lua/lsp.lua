@@ -1,4 +1,4 @@
-local projects_dirs = require('projects')
+local get_project_path = require('project_utils').get_project_path
 
 local lsp_installer = require("nvim-lsp-installer")
 -- You should install for each language server manually with :LspInstall
@@ -11,10 +11,9 @@ lsp_installer.on_server_ready(function(server)
         local orig_config = require('lspconfig.server_configurations.pylsp')
         local orig_root_dir = orig_config['default_config']['root_dir']
         opts.root_dir = function (fname)
-            for _, value in pairs(projects_dirs) do
-                if fname:find(value) then
-                    return value
-                end
+            local project_path = get_project_path(fname)
+            if project_path then
+                return project_path
             end
             return orig_root_dir(fname)
         end
@@ -22,12 +21,9 @@ lsp_installer.on_server_ready(function(server)
         local orig_config = require('lspconfig.server_configurations.pyright')
         local orig_root_dir = orig_config['default_config']['root_dir']
         opts.root_dir = function (fname)
-            for _, value in pairs(projects_dirs) do
-                -- doesn't work as intedned due to null ls see comment
-                if fname:find(value) then
-                    print(value)
-                    return value
-                end
+            local project_path = get_project_path(fname)
+            if project_path then
+                return project_path
             end
             return orig_root_dir(fname)
         end
@@ -44,15 +40,24 @@ lsp_installer.on_server_ready(function(server)
     -- This setup() function will take the provided server configuration and decorate it with the necessary properties
     -- before passing it onwards to lspconfig.
     -- Refer to https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
+    print(server.name)
     server:setup(opts)
 end)
 
+--local nls_root_pattern = require('null-ls.utils').root_pattern
 require('null-ls').setup({
-    -- note that this also changes root dir so now the root dir will be of the file but will have 2 workspaces
-    -- this is a bug but I actually wanted to have this feature so I don't care
     sources = {
         require('null-ls').builtins.diagnostics.pylint,
-    }
+    },
+    --root_dir = function (fname)
+        --for _, value in pairs(projects_dirs) do
+            --if fname:find(value) then
+                --print(value)
+                --return value
+            --end
+        --end
+        --return nls_root_pattern(".null-ls-root", "Makefile", ".git")(fname)
+    --end
 })
 
 vim.diagnostic.config{
