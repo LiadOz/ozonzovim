@@ -65,6 +65,16 @@ return require('packer').startup(function(use)
         name = 'catppuccin'
     }
 
+    use { -- dims inactive portions of code
+        "folke/twilight.nvim",
+        config = function()
+            require("twilight").setup {}
+        end
+    }
+
+    use 'jghauser/mkdir.nvim' -- automatically create missing directories
+
+
     --------------------------------------
     -- completion plugins
     use 'hrsh7th/cmp-nvim-lsp'
@@ -73,27 +83,10 @@ return require('packer').startup(function(use)
     use 'hrsh7th/cmp-cmdline'
     use 'hrsh7th/nvim-cmp'
 
-    -- For vsnip users.
-    -- use 'hrsh7th/cmp-vsnip'
-    -- use 'hrsh7th/vim-vsnip'
-
-    -- For luasnip users.
     use 'L3MON4D3/LuaSnip'
     use 'saadparwaiz1/cmp_luasnip'
 
-    -- For ultisnips users.
-    -- use 'SirVer/ultisnips'
-    -- use 'quangnguyen30192/cmp-nvim-ultisnips'
-
-    -- For snippy users.
-    -- use 'dcampos/nvim-snippy'
-    -- use 'dcampos/cmp-snippy'
     --------------------------------------
-
-  -- use 'foo2/bar2.nvim'
-
-  -- Automatically set up your configuration after cloning packer.nvim
-  -- Put this at the end after all plugins
 
     use 'ryanoasis/vim-devicons' -- dev-icons is suggested being run last
     -- make sure you have a patched font https://github.com/ryanoasis/nerd-fonts

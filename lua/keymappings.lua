@@ -47,7 +47,8 @@ local mappings = {
     t = {
         name = 'toggle+',
         u = {':UndotreeToggle<cr>', 'undo tree'},
-        f = {':NERDTreeToggle<cr>', 'explorer'}
+        f = {':NERDTreeToggle<cr>', 'explorer'},
+        t = {':Twilight<cr>', 'twilight'}
     },
     e = {
         name = 'edit+',
