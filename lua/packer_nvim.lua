@@ -73,6 +73,7 @@ return require('packer').startup(function(use)
     }
 
     use 'jghauser/mkdir.nvim' -- automatically create missing directories
+    use 'tpope/vim-surround'
 
 
     --------------------------------------

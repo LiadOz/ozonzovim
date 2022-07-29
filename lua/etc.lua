@@ -22,7 +22,7 @@ local telescope = require('telescope')
 local action_layout = require("telescope.actions.layout")
 telescope.setup{
     defaults = {
-        file_ignore_patterns = {"node_modules/.*", "__pycache__/.*", ".env/.*", "env/.*", "build/.*"},
+        file_ignore_patterns = {"node_modules/.*", "__pycache__/.*", "env/.*", "build/.*"},
         layout_strategy = 'vertical',
         layout_config = { width = 0.7 },
     },
@@ -46,7 +46,7 @@ telescope.setup{
 telescope.load_extension('fzf')
 
 require('project_nvim').setup{
-    patterns = { ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json", ".project" },
+    patterns = { ".git", ".project" },
     detection_methods = {'pattern', 'lsp'},
 }
 
@@ -60,12 +60,6 @@ require('lualine').setup{
 }
 
 local group = vim.api.nvim_create_augroup("config", {clear = true})
-vim.api.nvim_create_autocmd("CursorHold", {
-    pattern = "*",
-    callback = vim.lsp.buf.hover,
-    group = group
-})
-
 vim.api.nvim_create_autocmd({'DirChanged'}, {
     pattern = "*",
     group = group,
