@@ -4,6 +4,7 @@ vim.o.completeopt = 'menu,menuone,noselect'
 local cmp = require'cmp'
 local luasnip = require('luasnip')
 
+
 cmp.setup({
   snippet = {
     -- REQUIRED - you must specify a snippet engine
@@ -24,20 +25,31 @@ cmp.setup({
             fallback()
         end
     end, { 'i', 'c' }),
+    ['<S-Tab>'] = cmp.mapping(function (fallback)
+        if cmp.visible() then
+            cmp.select_prev_item()
+        else
+            fallback()
+        end
+    end, { 'i', 'c' }),
     ['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
     ['<C-e>'] = cmp.mapping({
       i = cmp.mapping.abort(),
       c = cmp.mapping.close(),
     }),
-    ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+    ['<CR>'] = cmp.mapping.confirm({ select = false }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
   },
   sources = cmp.config.sources({
     { name = 'nvim_lsp' },
     { name = 'luasnip' }, -- For luasnip users.
+    { name = 'nvim_lsp_signature_help' },
+    { name = 'nvim_lua' },
+    { name = 'path' },
   }, {
     { name = 'buffer' },
   })
 })
+
 
 -- Set configuration for specific filetype.
 cmp.setup.filetype('gitcommit', {
@@ -64,10 +76,3 @@ cmp.setup.cmdline(':', {
     { name = 'cmdline' }
   })
 })
-
--- Setup lspconfig.
---local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
----- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
---require('lspconfig')['tsserver'].setup {
---  capabilities = capabilities
---}
