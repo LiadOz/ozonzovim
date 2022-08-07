@@ -26,11 +26,12 @@ lspconfig.sumneko_lua.setup {
 lspconfig.pyright.setup {
     capabilities = cmp_capabilities,
     root_dir = function(fname)
+        local orig_config = require('lspconfig.server_configurations.pyright')
         local project_path = get_project_path(fname)
         if project_path then
             return project_path
         end
-        return lspconfig.server_configurations.pyright.default_config.root_dir(fname)
+        return orig_config.default_config.root_dir(fname)
     end,
     handlers = {
         ['textDocument/publishDiagnostics'] = function() end
