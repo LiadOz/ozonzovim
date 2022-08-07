@@ -75,6 +75,17 @@ return require('packer').startup(function(use)
     use 'jghauser/mkdir.nvim' -- automatically create missing directories
     use 'tpope/vim-surround'
 
+    use { 'akinsho/toggleterm.nvim', tag = 'v1.*' }
+
+    use { "williamboman/mason.nvim" }
+    use { "williamboman/mason-lspconfig.nvim" }
+
+    use { "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
+        config = function()
+            require("lsp_lines").setup()
+            require("lsp_lines").toggle()
+        end
+    }
 
     --------------------------------------
     -- completion plugins

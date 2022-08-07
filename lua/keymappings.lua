@@ -3,6 +3,23 @@ local wk = require('which-key')
 local proj_dir = require('project_utils').get_cwd_project_dir
 local telescope = require('telescope.builtin')
 
+require('toggleterm').setup({
+    open_mapping = [[<c-t>]],
+    direction = 'float'
+})
+local Terminal = require('toggleterm.terminal').Terminal
+local lazygit = Terminal:new({ cmd = "lazygit", hidden = true})
+
+local function _lazygit_toggle()
+  lazygit:toggle()
+end
+
+local function slash_term()
+    local test_path = require('slash_utils').cp_test_path()
+    local term = Terminal:new({ cmd = "slash run -s ibox609" .. test_path, hidden = true, close_on_exit=false})
+    term:toggle()
+end
+
 local mappings = {
     ["<TAB>"] = { ':b#<cr>', 'prev buffer' },
     [" "] = { ':HopChar2<cr>', 'jump2' },
@@ -68,9 +85,12 @@ local mappings = {
     },
     t = {
         name = 'toggle+',
-        u = { ':UndotreeToggle<cr>', 'undo tree' },
-        f = { ':NERDTreeToggle<cr>', 'explorer' },
-        t = { ':Twilight<cr>', 'twilight' }
+        u = {':UndotreeToggle<cr>', 'undo tree'},
+        f = {':NERDTreeToggle<cr>', 'explorer'},
+        t = {':Twilight<cr>', 'twilight'},
+        g = {function() _lazygit_toggle() end, 'lazygit'},
+        s = {function () slash_term() end, 'slash'},
+        d = { require("lsp_lines").toggle, 'diagnostics' }
     },
     e = {
         name = 'edit+',
