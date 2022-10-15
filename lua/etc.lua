@@ -18,6 +18,11 @@ require('nvim-treesitter.configs').setup {
         "rust",
         "c"
 	},
+    rainbow = {
+        enable = true,
+        -- disable = { "jsx", "cpp" }, list of languages you want to disable the plugin for
+        extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean 
+    }
 }
 
 local telescope = require('telescope')
@@ -67,6 +72,7 @@ vim.api.nvim_create_autocmd({'DirChanged'}, {
     group = group,
     callback = function ()
         local cwd = vim.v.event.cwd
-        require('notify')(cwd, 'info', {title='Setting CWD'})
+        vim.notify('CWD set to ' .. cwd)
+        --require('notify')(cwd, 'info', {title='Setting CWD'})
     end
 })

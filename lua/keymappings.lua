@@ -1,3 +1,4 @@
+vim.g.mapleader = ' '
 local wk = require('which-key')
 
 local proj_dir = require('project_utils').get_cwd_project_dir
@@ -8,15 +9,15 @@ require('toggleterm').setup({
     direction = 'float'
 })
 local Terminal = require('toggleterm.terminal').Terminal
-local lazygit = Terminal:new({ cmd = "lazygit", hidden = true})
+local lazygit = Terminal:new({ cmd = "lazygit", hidden = true })
 
 local function _lazygit_toggle()
-  lazygit:toggle()
+    lazygit:toggle()
 end
 
 local function slash_term()
     local test_path = require('slash_utils').cp_test_path()
-    local term = Terminal:new({ cmd = "slash run -s ibox609" .. test_path, hidden = true, close_on_exit=false})
+    local term = Terminal:new({ cmd = "slash run -s ibox609" .. test_path, hidden = true, close_on_exit = false })
     term:toggle()
 end
 
@@ -31,7 +32,8 @@ local mappings = {
         d = { ':Bdelete<cr>', 'delete buffer' },
         D = { ':Bdelete!<cr>', 'delete buffer no save' },
         b = { function() telescope.buffers({ sort_lastused = true, ignore_current_buffer = true }) end, 'buffers' },
-        B = { function() telescope.buffers({ sort_lastused = true, ignore_current_buffer = true, cwd_only = true }) end, 'buffers (cwd)' },
+        B = { function() telescope.buffers({ sort_lastused = true, ignore_current_buffer = true, cwd_only = true }) end,
+            'buffers (cwd)' },
     },
     f = {
         name = 'find+',
@@ -63,7 +65,7 @@ local mappings = {
         n = { '<cmd>lua vim.lsp.buf.rename()<cr>', 'rename' },
         a = { "<cmd>lua vim.lsp.buf.code_action()<cr>", 'code action' },
         r = { "<cmd>lua require('telescope.builtin').lsp_references()<cr>", 'references' },
-        f = { '<cmd>lua vim.lsp.buf.formatting()<cr>', 'formatting' },
+        f = { function() vim.lsp.buf.format({ async = true }) end, 'format' },
         w = {
             name = 'workspace+',
             l = { '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<cr>', 'list' },
@@ -85,25 +87,45 @@ local mappings = {
     },
     t = {
         name = 'toggle+',
-        u = {':UndotreeToggle<cr>', 'undo tree'},
-        f = {':NERDTreeToggle<cr>', 'explorer'},
-        t = {':Twilight<cr>', 'twilight'},
-        g = {function() _lazygit_toggle() end, 'lazygit'},
-        s = {function () slash_term() end, 'slash'},
+        u = { ':UndotreeToggle<cr>', 'undo tree' },
+        f = { ':NERDTreeToggle<cr>', 'explorer' },
+        t = { ':Twilight<cr>', 'twilight' },
+        g = { function() _lazygit_toggle() end, 'lazygit' },
+        s = { function() slash_term() end, 'slash' },
         d = { require("lsp_lines").toggle, 'diagnostics' }
     },
     e = {
         name = 'edit+',
         c = { '<plug>NERDCommenterToggle', 'comment' },
         s = { '<plug>NERDCommenterSexy', 'sexy comment' },
-        y = { '<plug>NERDCommenterYank', 'comment yank' },
+        y = { '<plug>NERDCommenterYank', 'comment yank' }
     },
     o = {
         name = 'other+',
         t = { function() telescope.colorscheme({ enable_preview = true }) end, 'select theme' },
         v = { function() telescope.vim_options() end, 'vim options' },
         r = { function() telescope.reloader() end, 'reloader' },
+        R = { ':source $MYVIMRC<cr> ', 'Reload nvim' },
+        s = { function() vim.api.nvim_cmd({ cmd = 'source', args = { '%' } }, {}) end, 'source file' }
+    },
+    j = {
+        name = 'jump+',
     }
 }
 wk.register(mappings, { prefix = "<leader>" })
 wk.register(mappings, { mode = "v", prefix = "<leader>" })
+
+local Hydra = require('hydra')
+Hydra({
+    name = 'jump',
+    mode = 'n',
+    body = '<leader>j',
+    heads = {
+        { 'h', function() vim.api.nvim_cmd({ cmd = 'GitGutterNextHunk' }, {}) end, { desc = '[N] hunk' } },
+        { 'H', function() vim.api.nvim_cmd({ cmd = 'GitGutterPrevHunk' }, {}) end, { desc = '[P] hunk' } },
+        { 'd', function() vim.diagnostic.goto_next() end, { desc = '[N] diagnostic' } },
+        { 'D', function() vim.diagnostic.goto_prev() end, { desc = '[P] diagnostic' } },
+        { 's', ']s', {desc = '[N] spell'} },
+        { 'S', '[s', {desc = '[P] spell'} },
+    }
+})

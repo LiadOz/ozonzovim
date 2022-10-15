@@ -1,4 +1,3 @@
-vim.g.mapleader = ' '
 vim.wo.relativenumber = true
 vim.o.timeoutlen= 500
 vim.o.number = true
@@ -11,6 +10,7 @@ vim.o.undodir = vim.env.HOME .. '/nvim/undo//'
 vim.o.updatetime = 100
 vim.o.autoread = true
 vim.o.laststatus = 3
+--vim.o.cmdheight = 0
 require('nightfox').setup{
     options={
         styles={

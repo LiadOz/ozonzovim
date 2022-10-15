@@ -2,27 +2,27 @@ local execute = vim.api.nvim_command
 local fn = vim.fn
 local install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
 if fn.empty(fn.glob(install_path)) > 0 then
-	fn.system({
-		'git', 'clone', 'https://github.com/wbthomason/packer.nvim', install_path
-	})
-	execute 'packadd packer.nvim'
+    fn.system({
+        'git', 'clone', 'https://github.com/wbthomason/packer.nvim', install_path
+    })
+    execute 'packadd packer.nvim'
 end
 
 return require('packer').startup(function(use)
-	use 'wbthomason/packer.nvim'
-	use 'folke/which-key.nvim'
+    use 'wbthomason/packer.nvim'
+    use 'folke/which-key.nvim'
     use 'EdenEast/nightfox.nvim'
     use {
         'phaazon/hop.nvim',
         config = function()
-            require'hop'.setup{}
+            require 'hop'.setup {}
         end
     }
     use {
         'nvim-telescope/telescope.nvim',
-        requires = { {'nvim-lua/plenary.nvim'} }
+        requires = { { 'nvim-lua/plenary.nvim' } }
     }
-    use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
+    use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
 
     use 'neovim/nvim-lspconfig'
     use 'williamboman/nvim-lsp-installer'
@@ -43,12 +43,12 @@ return require('packer').startup(function(use)
     use {
         'j-hui/fidget.nvim',
         config = function()
-            require('fidget').setup{}
+            require('fidget').setup {}
         end
     }
     use {
         'jose-elias-alvarez/null-ls.nvim',
-        requires = { {'nvim-lua/plenary.nvim'} }
+        requires = { { 'nvim-lua/plenary.nvim' } }
     }
 
     use 'preservim/nerdtree'
@@ -86,6 +86,16 @@ return require('packer').startup(function(use)
             require("lsp_lines").toggle()
         end
     }
+
+    use { "akinsho/toggleterm.nvim" }
+    use { "p00f/nvim-ts-rainbow" }
+    use { "nvim-treesitter/nvim-treesitter-context",
+        config = function()
+            require('treesitter-context').setup()
+        end
+    }
+    use { "anuvyklack/hydra.nvim" }
+    use { "mfussenegger/nvim-dap" }
 
     --------------------------------------
     -- completion plugins
