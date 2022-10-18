@@ -3,6 +3,7 @@ local wk = require('which-key')
 
 local proj_dir = require('project_utils').get_cwd_project_dir
 local telescope = require('telescope.builtin')
+local dap = require('dap')
 
 require('toggleterm').setup({
     open_mapping = [[<c-t>]],
@@ -110,6 +111,13 @@ local mappings = {
     },
     j = {
         name = 'jump+',
+    },
+    d = {
+        name = 'debug+',
+        t = { function() dap.terminate() end, 'terminate' },
+        b = { function() dap.toggle_breakpoint({}, {}, {}) end, 'toggle breakpoint' },
+        l = { function() dap.list_breakpoints() end, 'list breakpoints' },
+        a = { function() dap.attach({}, {request='attach'}) end, 'attach' },
     }
 }
 wk.register(mappings, { prefix = "<leader>" })
@@ -127,5 +135,20 @@ Hydra({
         { 'D', function() vim.diagnostic.goto_prev() end, { desc = '[P] diagnostic' } },
         { 's', ']s', {desc = '[N] spell'} },
         { 'S', '[s', {desc = '[P] spell'} },
+    }
+})
+
+Hydra({
+    name = 'debug mode',
+    mode = 'n',
+    body = '<leader>dd',
+    heads = {
+        { 'c', function() dap.continue() end, { desc = 'continue' } },
+        { 's', function() dap.step_over() end, { desc = 'step over' } },
+        { 'e', function() dap.step_into() end, { desc = 'step into' } },
+        { 'u', function() dap.up() end, { desc = 'stack up' } },
+        { 'd', function() dap.down() end, { desc = 'stack down' } },
+        { 't', function() dap.run_to_cursor() end, { desc = 'run to cursor' } },
+        { 'r', function() dap.repl.toggle() end, {desc = 'repl'} },
     }
 })
