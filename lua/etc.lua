@@ -60,12 +60,6 @@ require('project_nvim').setup{
 telescope.load_extension('projects')
 
 
-require('lualine').setup{
-    --options = {
-        --theme = "catppuccin"
-    --}
-}
-
 local group = vim.api.nvim_create_augroup("config", {clear = true})
 vim.api.nvim_create_autocmd({'DirChanged'}, {
     pattern = "*",

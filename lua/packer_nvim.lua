@@ -94,6 +94,8 @@ return require('packer').startup(function(use)
     }
     use { "anuvyklack/hydra.nvim" }
     use { "mfussenegger/nvim-dap" }
+    use { "theHamsta/nvim-dap-virtual-text" }
+    use { "ii14/neorepl.nvim" }
 
     --------------------------------------
     -- completion plugins
