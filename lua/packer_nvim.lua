@@ -97,7 +97,7 @@ return require('packer').startup(function(use)
     use { "rcarriga/cmp-dap" }
     use { "ii14/neorepl.nvim" }
     use { "stevearc/dressing.nvim" }
-    use { "liadoz/meta-breakpoints" }
+    use { "liadoz/meta-breakpoints.nvim" }
 
     --------------------------------------
     -- completion plugins
