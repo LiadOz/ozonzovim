@@ -12,6 +12,10 @@ cmp.setup({
         luasnip.lsp_expand(args.body) -- For `luasnip` users.
     end,
   },
+  enabled = function()
+    return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt"
+        or require("cmp_dap").is_dap_buffer()
+  end,
   mapping = {
     ['<C-u>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
     ['<C-d>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
@@ -47,7 +51,19 @@ cmp.setup({
     { name = 'path' },
   }, {
     { name = 'buffer' },
-  })
+  }),
+  formatting = {
+      fields = {'menu', 'abbr', 'kind'},
+      format = require('lspkind').cmp_format({
+          mode = 'symbol_text', -- show only symbol annotations
+          maxwidth = 50,
+          ellipsis_char = '...',
+
+          --before = function (entry, vim_item)
+              --return vim_item
+          --end
+      })
+  }
 })
 
 
@@ -75,4 +91,11 @@ cmp.setup.cmdline(':', {
   }, {
     { name = 'cmdline' }
   })
+})
+
+require("cmp").setup.filetype({ "dap-repl", "dapui_watches", "dapui_hover" }, {
+  sources = {
+    { name = "dap" },
+    { name = "path" }
+  },
 })

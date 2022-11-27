@@ -16,10 +16,10 @@ require('nightfox').setup {
         styles = {
             comments = 'italic',
             keywords = 'bold',
-            types = 'italic,bold',
-            conditionals = "NONE",
+            types = 'bold',
+            conditionals = "italic",
             constants = "NONE",
-            functions = "NONE",
+            functions = "italic",
             numbers = "NONE",
             operators = "NONE",
             strings = "NONE",
@@ -27,14 +27,8 @@ require('nightfox').setup {
         }
     }
 }
-vim.cmd('colorscheme duskfox')
-require('lualine').setup {
-    options = {
-        section_separators = { left = '', right = '' },
-        component_separators = { left = '', right = '' }
-    }
-}
-
+vim.cmd('colorscheme nightfox')
+require('nvim-web-devicons').setup {}
 
 --vim.g.catppuccin_flavour = "frappe"
 --vim.cmd('colorscheme catppuccin')

@@ -23,6 +23,7 @@ return require('packer').startup(function(use)
         requires = { { 'nvim-lua/plenary.nvim' } }
     }
     use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
+    use { 'nvim-telescope/telescope-symbols.nvim' }
 
     use 'neovim/nvim-lspconfig'
     use 'williamboman/nvim-lsp-installer'
@@ -53,10 +54,8 @@ return require('packer').startup(function(use)
 
     use 'preservim/nerdtree'
     use 'djoshea/vim-autoread'
-    use {
-        'nvim-lualine/lualine.nvim',
-        requires = { 'kyazdani42/nvim-web-devicons', opt = true }
-    }
+    use { 'nvim-lualine/lualine.nvim' }
+    use { 'kyazdani42/nvim-web-devicons' }
 
     use 'rcarriga/nvim-notify'
     use 'nvim-treesitter/playground'
@@ -95,7 +94,10 @@ return require('packer').startup(function(use)
     use { "anuvyklack/hydra.nvim" }
     use { "mfussenegger/nvim-dap" }
     use { "theHamsta/nvim-dap-virtual-text" }
+    use { "rcarriga/cmp-dap" }
     use { "ii14/neorepl.nvim" }
+    use { "stevearc/dressing.nvim" }
+    use { "liadoz/meta-breakpoints" }
 
     --------------------------------------
     -- completion plugins
@@ -109,10 +111,10 @@ return require('packer').startup(function(use)
 
     use 'L3MON4D3/LuaSnip'
     use 'saadparwaiz1/cmp_luasnip'
+    use { 'onsails/lspkind.nvim' }
 
     --------------------------------------
 
-    use 'ryanoasis/vim-devicons' -- dev-icons is suggested being run last
     -- make sure you have a patched font https://github.com/ryanoasis/nerd-fonts
 
 end)
