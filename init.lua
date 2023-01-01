@@ -3,7 +3,7 @@ require('keymappings')
 
 require('defaults')
 require('completion')
-require('lsp')
+require('lsp_configuration')
 require('etc')
 local debug = require('debug_config')
 

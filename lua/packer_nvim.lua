@@ -115,6 +115,7 @@ return require('packer').startup(function(use)
 
     --------------------------------------
 
+    use { "mxsdev/nvim-dap-vscode-js", requires = {"mfussenegger/nvim-dap"} }
     -- make sure you have a patched font https://github.com/ryanoasis/nerd-fonts
 
 end)

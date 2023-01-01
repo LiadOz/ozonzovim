@@ -92,7 +92,8 @@ local mappings = {
         t = { ':Twilight<cr>', 'twilight' },
         g = { function() _lazygit_toggle() end, 'lazygit' },
         s = { function() slash_term() end, 'slash' },
-        d = { require("lsp_lines").toggle, 'diagnostics' }
+        d = { require("lsp_lines").toggle, 'diagnostics' },
+        p = { ':TSPlaygroundToggle<CR>', 'treesitter playground' }
     },
     e = {
         name = 'edit+',

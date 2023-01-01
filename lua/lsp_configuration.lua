@@ -41,6 +41,7 @@ lspconfig.pyright.setup {
 lspconfig.tsserver.setup {}
 lspconfig.tailwindcss.setup {}
 lspconfig.rust_analyzer.setup {}
+lspconfig.clangd.setup {}
 
 --local nls_root_pattern = require('null-ls.utils').root_pattern
 require('null-ls').setup({

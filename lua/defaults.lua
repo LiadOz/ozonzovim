@@ -10,6 +10,9 @@ vim.o.undodir = vim.env.HOME .. '/nvim/undo//'
 vim.o.updatetime = 100
 vim.o.autoread = true
 vim.o.laststatus = 3
+vim.o.mouse = nil
+vim.o.foldmethod = 'indent'
+vim.o.foldlevel = 99
 --vim.o.cmdheight = 0
 require('nightfox').setup {
     options = {
