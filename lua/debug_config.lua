@@ -6,7 +6,7 @@ local dap = require('dap')
 
 
 dap.adapters.python = function(cb, config)
-  local function followup_func_cb(text)
+  local function is_multiline(text)
     if string.sub(text, -1) == ':' then
       return true
     elseif string.sub(text, -1) == '\\' then
@@ -21,13 +21,14 @@ dap.adapters.python = function(cb, config)
       type = 'server',
       host = '127.0.0.1',
       port = 1337,
-      followup_func_cb = followup_func_cb
+      is_multiline = is_multiline
     })
   else
     cb({
       type = 'executable',
       command = 'python',
-      followup_func_cb = followup_func_cb
+      args = {'-m', 'debugpy.adapter'},
+      is_multiline = is_multiline
     })
   end
 end
@@ -38,6 +39,7 @@ local python_server_config = {
   name = 'Python: Attach To Server',
   justMyCode = false,
 }
+
 dap.configurations.python = {
   python_server_config,
   {
@@ -46,7 +48,6 @@ dap.configurations.python = {
     request = "launch",
     program = "${file}",
     console = "integratedTerminal",
-    args = {'-m', 'debugpy.adapter'},
     justMyCode = false
   },
 }
@@ -108,14 +109,28 @@ function lualine_component:init(options)
       { fg = '#f6c177' }, 'dap_auto_start', self.options),
     running = highlight.create_component_highlight_group(
       { fg = '#a3be8c' }, 'dap_running', self.options),
+    stopped = highlight.create_component_highlight_group(
+      { fg = '#c94f6d' }, 'dap_stopped', self.options),
   }
   self.texts = {
     manual = 'MANUAL',
     auto = 'AUTO',
-    running = 'RUNNING'
+    running = 'RUNNING',
+    stopped = 'STOPPED',
   }
 
   if self.options.color == nil then self.options.color = '' end
+end
+
+local run_status = 'stopped'
+dap.listeners.after.event_stopped['lualine_component.stopped'] = function()
+  run_status = 'stopped'
+end
+dap.listeners.after.event_continued['lualine_component.continue'] = function()
+  run_status = 'running'
+end
+dap.listeners.after.event_initialized['lualine_component.initialized'] = function()
+  run_status = 'running'
 end
 
 function lualine_component:update_status()
@@ -127,7 +142,7 @@ function lualine_component:update_status()
   end
   local mode
   if dap.session() then
-    mode = 'running'
+    mode = run_status
   elseif has_debug_pipe then
     mode = 'auto'
   else
@@ -152,8 +167,6 @@ local mappings = {
     p = { function() meta.toggle_meta_breakpoint({ meta = { persistent = true } }) end, 'toggle persistent breakpoint' },
     h = { function() meta.toggle_hook_breakpoint('debug_hook') end, 'toggle hook breakpoint' },
     r = { toggle_dap_repl, 'toggle repl' },
-    s = { dap.setp_into, 'setup nvim server' },
-    n = { dap.step_over, 'step over' },
     D = { function() dap.disconnect({ terminateDebuggee = false }) end, 'disconnect debugger' },
     e = { function() setup_nvim_server() end, 'setup nvim server' },
     E = { function() stop_nvim_server() end, 'stop nvim server' },
