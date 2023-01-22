@@ -1,2 +1,4 @@
 lua/projects.lua
 plugin/packer_compiled.lua
+lua/host_configs/current_host
+lua/host_configs/current_host/**

@@ -1,6 +1,4 @@
 local M = {}
---local mason_registery = require('mason_registery')
---mason_registery.is_installed()
 
 local dap = require('dap')
 
@@ -38,17 +36,27 @@ local python_server_config = {
   request = 'attach',
   name = 'Python: Attach To Server',
   justMyCode = false,
+  repl_lang = 'python',
 }
 
 dap.configurations.python = {
   python_server_config,
+  {
+    name = "Python: Current File",
+    type = "python",
+    request = "launch",
+    program = "${file}",
+    justMyCode = false,
+    repl_lang = 'python',
+  },
   {
     name = "Python: Current File (Integrated Terminal)",
     type = "python",
     request = "launch",
     program = "${file}",
     console = "integratedTerminal",
-    justMyCode = false
+    justMyCode = false,
+    repl_lang = 'python',
   },
 }
 
@@ -65,9 +73,25 @@ for _, language in ipairs({ "typescript", "javascript" }) do
       name = "Launch file",
       program = "${file}",
       cwd = "${workspaceFolder}",
+      repl_lang = language,
     },
   }
 end
+
+
+dap.adapters.nlua = function(callback, config)
+  callback({ type = 'server', host = config.host or "127.0.0.1", port = config.port or 8086})
+end
+
+
+dap.configurations.lua = {
+  {
+    type = 'nlua',
+    request = 'attach',
+    name = "Attach to running Neovim instance",
+    repl_lang = 'lua'
+  }
+}
 
 
 local meta = require('meta-breakpoints')
@@ -78,7 +102,7 @@ meta.setup({
 })
 
 local function toggle_dap_repl()
-  dap.repl.toggle()
+  dap.repl.toggle({height = 10})
   vim.cmd('wincmd p')
   local filetype = vim.api.nvim_buf_get_option(0, "filetype")
   if filetype == 'dap-repl' then
@@ -158,6 +182,16 @@ M.remote_continue = function()
   dap.run(python_server_config)
 end
 
+local widgets = require('dap.ui.widgets')
+local frames_widget = nil
+local function toggle_frames_widget()
+  if frames_widget == nil then
+    frames_widget = widgets.cursor_float(widgets.frames)
+  else
+    frames_widget.toggle()
+  end
+end
+
 local wk = require('which-key')
 local mappings = {
   d = {
@@ -170,6 +204,8 @@ local mappings = {
     D = { function() dap.disconnect({ terminateDebuggee = false }) end, 'disconnect debugger' },
     e = { function() setup_nvim_server() end, 'setup nvim server' },
     E = { function() stop_nvim_server() end, 'stop nvim server' },
+    n = { function() require('osv').launch({port = 8086}) end, 'debug this instance' },
+    f = { toggle_frames_widget, 'current frames' },
   }
 }
 wk.register(mappings, { prefix = "<leader>" })
@@ -199,6 +235,7 @@ Hydra({
     { 't', dap.run_to_cursor, { desc = 'run to cursor' } },
     { 'r', toggle_dap_repl, { desc = 'repl', exit = true } },
     { 'T', dap.terminate, { desc = 'terminate', exit = true } },
+    { 'f', toggle_frames_widget, { desc = 'current frames'} },
     { 'q', nil, { exit = true, desc = 'exit mode' } },
   }
 

@@ -8,114 +8,145 @@ if fn.empty(fn.glob(install_path)) > 0 then
     execute 'packadd packer.nvim'
 end
 
+local default_plugins = {
+  'wbthomason/packer.nvim',
+  'folke/which-key.nvim',
+  'EdenEast/nightfox.nvim',
+  {
+    'phaazon/hop.nvim',
+    config = function()
+        require 'hop'.setup {}
+    end
+  },
+  {
+    'nvim-telescope/telescope.nvim',
+    requires = { { 'nvim-lua/plenary.nvim' } }
+  },
+  {
+    'nvim-telescope/telescope-fzf-native.nvim',
+    run = 'make'
+  },
+  'nvim-telescope/telescope-symbols.nvim',
+
+  'neovim/nvim-lspconfig',
+  'williamboman/nvim-lsp-installer',
+  'nvim-treesitter/nvim-treesitter',
+  'ahmedkhalf/project.nvim',
+  'famiu/bufdelete.nvim',
+  'jiangmiao/auto-pairs',
+
+  'tpope/vim-fugitive',
+  'airblade/vim-gitgutter',
+  'mbbill/undotree',
+  {
+    'preservim/nerdcommenter',
+    config = function()
+        vim.g.NERDCreateDefaultMappings = 0
+    end
+  },
+  {
+    'j-hui/fidget.nvim',
+    config = function()
+        require('fidget').setup {}
+    end
+  },
+  {
+      'jose-elias-alvarez/null-ls.nvim',
+      requires = { { 'nvim-lua/plenary.nvim' } }
+  },
+  'preservim/nerdtree',
+  'djoshea/vim-autoread',
+  'nvim-lualine/lualine.nvim',
+  'kyazdani42/nvim-web-devicons',
+  'rcarriga/nvim-notify',
+  'nvim-treesitter/playground',
+  {
+    'catppuccin/nvim',
+    name = 'catppuccin'
+  },
+  { -- dims inactive portions of code
+    "folke/twilight.nvim",
+    config = function()
+        require("twilight").setup {}
+    end
+  },
+  'jghauser/mkdir.nvim', -- automatically create missing directories
+  'tpope/vim-surround',
+
+  "williamboman/mason.nvim",
+  "williamboman/mason-lspconfig.nvim",
+
+  {
+    "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
+    config = function()
+        require("lsp_lines").setup()
+        require("lsp_lines").toggle()
+    end
+  },
+  "akinsho/toggleterm.nvim",
+  "p00f/nvim-ts-rainbow",
+  {
+    "nvim-treesitter/nvim-treesitter-context",
+    config = function()
+        require('treesitter-context').setup()
+    end
+  },
+  "anuvyklack/hydra.nvim",
+  "mfussenegger/nvim-dap",
+  "theHamsta/nvim-dap-virtual-text",
+  "rcarriga/cmp-dap",
+  "ii14/neorepl.nvim",
+  "stevearc/dressing.nvim",
+  "jbyuki/one-small-step-for-vimkind",
+  {
+    "mxsdev/nvim-dap-vscode-js",
+    requires = {"mfussenegger/nvim-dap"}
+  },
+
+  --------------------------------------
+  -- completion plugins
+  'hrsh7th/cmp-nvim-lsp',
+  'hrsh7th/cmp-buffer',
+  'hrsh7th/cmp-path',
+  'hrsh7th/cmp-cmdline',
+  'hrsh7th/nvim-cmp',
+  'hrsh7th/cmp-nvim-lsp-signature-help',
+  'hrsh7th/cmp-nvim-lua',
+
+  'L3MON4D3/LuaSnip',
+  'saadparwaiz1/cmp_luasnip',
+  'onsails/lspkind.nvim',
+  --------------------------------------
+}
+
+local ok, host_plugin_config = pcall(require, 'host_configs.current_host.host_config')
+local host_additional_plugins = {}
+local host_disabled_plugins = {}
+if ok then
+  host_disabled_plugins = host_plugin_config.host_disabled_plugins or {}
+  host_additional_plugins = host_plugin_config.host_additional_plugins or {}
+end
+
+local host_plugins = {}
+
+for _, plugin_data in ipairs(default_plugins) do
+  local plugin_name = ''
+  if type(plugin_data) == "table" then
+    plugin_name = plugin_data[1]
+  else
+    plugin_name = plugin_data
+  end
+  if not host_disabled_plugins[plugin_name] then
+    table.insert(host_plugins, plugin_data)
+  end
+end
+
+for _, plugin_data in ipairs(host_additional_plugins) do
+  table.insert(host_plugins, plugin_data)
+end
+
 return require('packer').startup(function(use)
-    use 'wbthomason/packer.nvim'
-    use 'folke/which-key.nvim'
-    use 'EdenEast/nightfox.nvim'
-    use {
-        'phaazon/hop.nvim',
-        config = function()
-            require 'hop'.setup {}
-        end
-    }
-    use {
-        'nvim-telescope/telescope.nvim',
-        requires = { { 'nvim-lua/plenary.nvim' } }
-    }
-    use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
-    use { 'nvim-telescope/telescope-symbols.nvim' }
-
-    use 'neovim/nvim-lspconfig'
-    use 'williamboman/nvim-lsp-installer'
-    use 'nvim-treesitter/nvim-treesitter'
-    use 'ahmedkhalf/project.nvim'
-    use 'famiu/bufdelete.nvim'
-    use 'jiangmiao/auto-pairs'
-
-    use 'tpope/vim-fugitive'
-    use 'airblade/vim-gitgutter'
-    use 'mbbill/undotree'
-    use {
-        'preservim/nerdcommenter',
-        config = function()
-            vim.g.NERDCreateDefaultMappings = 0
-        end
-    }
-    use {
-        'j-hui/fidget.nvim',
-        config = function()
-            require('fidget').setup {}
-        end
-    }
-    use {
-        'jose-elias-alvarez/null-ls.nvim',
-        requires = { { 'nvim-lua/plenary.nvim' } }
-    }
-
-    use 'preservim/nerdtree'
-    use 'djoshea/vim-autoread'
-    use { 'nvim-lualine/lualine.nvim' }
-    use { 'kyazdani42/nvim-web-devicons' }
-
-    use 'rcarriga/nvim-notify'
-    use 'nvim-treesitter/playground'
-    use {
-        'catppuccin/nvim',
-        name = 'catppuccin'
-    }
-
-    use { -- dims inactive portions of code
-        "folke/twilight.nvim",
-        config = function()
-            require("twilight").setup {}
-        end
-    }
-
-    use 'jghauser/mkdir.nvim' -- automatically create missing directories
-    use 'tpope/vim-surround'
-
-    use { "williamboman/mason.nvim" }
-    use { "williamboman/mason-lspconfig.nvim" }
-
-    use { "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
-        config = function()
-            require("lsp_lines").setup()
-            require("lsp_lines").toggle()
-        end
-    }
-
-    use { "akinsho/toggleterm.nvim" }
-    use { "p00f/nvim-ts-rainbow" }
-    use { "nvim-treesitter/nvim-treesitter-context",
-        config = function()
-            require('treesitter-context').setup()
-        end
-    }
-    use { "anuvyklack/hydra.nvim" }
-    use { "mfussenegger/nvim-dap" }
-    use { "theHamsta/nvim-dap-virtual-text" }
-    use { "rcarriga/cmp-dap" }
-    use { "ii14/neorepl.nvim" }
-    use { "stevearc/dressing.nvim" }
-    use { "liadoz/meta-breakpoints.nvim" }
-
-    --------------------------------------
-    -- completion plugins
-    use 'hrsh7th/cmp-nvim-lsp'
-    use 'hrsh7th/cmp-buffer'
-    use 'hrsh7th/cmp-path'
-    use 'hrsh7th/cmp-cmdline'
-    use 'hrsh7th/nvim-cmp'
-    use 'hrsh7th/cmp-nvim-lsp-signature-help'
-    use 'hrsh7th/cmp-nvim-lua'
-
-    use 'L3MON4D3/LuaSnip'
-    use 'saadparwaiz1/cmp_luasnip'
-    use { 'onsails/lspkind.nvim' }
-
-    --------------------------------------
-
-    use { "mxsdev/nvim-dap-vscode-js", requires = {"mfussenegger/nvim-dap"} }
-    -- make sure you have a patched font https://github.com/ryanoasis/nerd-fonts
-
+  for _, plugin_data in ipairs(host_plugins) do
+    use(plugin_data)
+  end
 end)

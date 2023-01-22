@@ -11,24 +11,26 @@ vim.o.updatetime = 100
 vim.o.autoread = true
 vim.o.laststatus = 3
 vim.o.mouse = nil
-vim.o.foldmethod = 'indent'
+vim.o.foldmethod = 'expr'
+vim.o.foldexpr = 'nvim_treesitter#foldexpr()'
 vim.o.foldlevel = 99
 --vim.o.cmdheight = 0
 require('nightfox').setup {
-    options = {
-        styles = {
-            comments = 'italic',
-            keywords = 'bold',
-            types = 'bold',
-            conditionals = "italic",
-            constants = "NONE",
-            functions = "italic",
-            numbers = "NONE",
-            operators = "NONE",
-            strings = "NONE",
-            variables = "NONE",
-        }
+  options = {
+    transparent = true,
+    styles = {
+      comments = 'italic',
+      keywords = 'bold',
+      types = 'bold',
+      conditionals = "italic",
+      constants = "NONE",
+      functions = "italic",
+      numbers = "NONE",
+      operators = "NONE",
+      strings = "NONE",
+      variables = "NONE",
     }
+  }
 }
 vim.cmd('colorscheme nightfox')
 require('nvim-web-devicons').setup {}
