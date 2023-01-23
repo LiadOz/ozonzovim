@@ -102,6 +102,7 @@ local default_plugins = {
     "mxsdev/nvim-dap-vscode-js",
     requires = {"mfussenegger/nvim-dap"}
   },
+  "liadoz/meta-breakpoints.nvim",
 
   --------------------------------------
   -- completion plugins

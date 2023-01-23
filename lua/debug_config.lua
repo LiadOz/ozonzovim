@@ -196,16 +196,20 @@ local wk = require('which-key')
 local mappings = {
   d = {
     name = 'debug+',
-    b = { function() dap.toggle_breakpoint() end, 'toggle breakpoint' },
-    B = { function() meta.simple_meta_breakpoint('debug_hook') end, 'toggle meta breakpoint' },
-    p = { function() meta.toggle_meta_breakpoint({ meta = { persistent = true } }) end, 'toggle persistent breakpoint' },
-    h = { function() meta.toggle_hook_breakpoint('debug_hook') end, 'toggle hook breakpoint' },
+    b = { function() meta.toggle_meta_breakpoint() end, 'toggle breakpoint' },
+    B = { function() meta.toggle_meta_breakpoint({meta = {persistent = true}}) end, 'toggle Preakpoint' },
+    m = { function() meta.toggle_meta_breakpoint({}, nil, true) end, 'toggle meta breakpoint' },
+    M = { function() meta.toggle_meta_breakpoint({meta = {persistent = true}}, nil, true) end, 'toggle meta Preakpoint' },
+    h = { function() meta.toggle_hook_breakpoint() end, 'toggle hook breakpoint' },
+    H = { function() meta.toggle_hook_breakpoint({meta = {persistent = true}}) end, 'toggle hook Preakpoint' },
     r = { toggle_dap_repl, 'toggle repl' },
     D = { function() dap.disconnect({ terminateDebuggee = false }) end, 'disconnect debugger' },
     e = { function() setup_nvim_server() end, 'setup nvim server' },
     E = { function() stop_nvim_server() end, 'stop nvim server' },
     n = { function() require('osv').launch({port = 8086}) end, 'debug this instance' },
     f = { toggle_frames_widget, 'current frames' },
+    w = { function() print(vim.inspect(meta.get_all_breakpoints())) end, 'query meta breakpoints' },
+    W = { function() print(vim.inspect(meta.get_all_hooks())) end, 'query hooks mapping' }
   }
 }
 wk.register(mappings, { prefix = "<leader>" })
