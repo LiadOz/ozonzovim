@@ -206,7 +206,7 @@ local mappings = {
     D = { function() dap.disconnect({ terminateDebuggee = false }) end, 'disconnect debugger' },
     e = { function() setup_nvim_server() end, 'setup nvim server' },
     E = { function() stop_nvim_server() end, 'stop nvim server' },
-    n = { function() require('osv').launch({port = 8086}) end, 'debug this instance' },
+    N = { function() require('osv').launch({port = 8086}) end, 'debug this instance' },
     f = { toggle_frames_widget, 'current frames' },
     w = { function() print(vim.inspect(meta.get_all_breakpoints())) end, 'query meta breakpoints' },
     W = { function() print(vim.inspect(meta.get_all_hooks())) end, 'query hooks mapping' }

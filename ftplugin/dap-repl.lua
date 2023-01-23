@@ -9,7 +9,12 @@ if session then
 else
   lang = 'python'
 end
-local injections = {}
-injections['nvimdap'] = '((user_input_statement) @content @combined (#set! language ' .. lang .. '))'
-local tsparser = vim.treesitter.get_parser(0, 'nvimdap', {injections = injections})
-vim.treesitter.highlighter.new(tsparser)
+
+local function setup_injections()
+  local injections = {}
+  injections['nvimdap'] = '((user_input_statement) @content @combined (#set! language ' .. lang .. '))'
+  local tsparser = vim.treesitter.get_parser(0, 'nvimdap', {injections = injections})
+  vim.treesitter.highlighter.new(tsparser)
+end
+
+pcall(setup_injections)
