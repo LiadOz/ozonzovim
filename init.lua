@@ -20,7 +20,7 @@ require('lualine').setup {
     }
 }
 
-local host_config_path = vim.fn.getcwd() .. '/host_configs/current_host/init.lua'
+local host_config_path = vim.fn.stdpath('config') .. '/lua/host_configs/current_host/init.lua'
 local stat, _ = vim.loop.fs_stat(host_config_path)
 if stat then
   local custom_config = require('host_configs.current_host')
