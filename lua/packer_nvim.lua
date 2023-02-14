@@ -84,7 +84,7 @@ local default_plugins = {
     end
   },
   "akinsho/toggleterm.nvim",
-  "p00f/nvim-ts-rainbow",
+  "mrjones2014/nvim-ts-rainbow",
   {
     "nvim-treesitter/nvim-treesitter-context",
     config = function()
