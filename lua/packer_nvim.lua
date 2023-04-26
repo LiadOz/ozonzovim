@@ -103,6 +103,7 @@ local default_plugins = {
     requires = {"mfussenegger/nvim-dap"}
   },
   "liadoz/meta-breakpoints.nvim",
+  "liadoz/nvim-dap-repl-highlights",
 
   --------------------------------------
   -- completion plugins

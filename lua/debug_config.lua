@@ -2,6 +2,7 @@ local M = {}
 
 local dap = require('dap')
 
+require('nvim-dap-repl-highlights').setup()
 
 dap.adapters.python = function(cb, config)
   local function is_multiline(text)
