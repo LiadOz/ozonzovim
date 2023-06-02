@@ -1,3 +1,4 @@
+require('nvim-dap-repl-highlights').setup()  -- must be setup before nvim-treesitter
 require('nvim-treesitter.configs').setup {
     highlight = {
         enable = true,
@@ -7,17 +8,18 @@ require('nvim-treesitter.configs').setup {
 	--	enable = true,
 	--	disable = {}
 	--},
-    --ensure_installed = {
-        --"lua",
-        --"python",
-        --"typescript",
-        --"html",
-        --"javascript",
-        --'tsx',
-        --'scss',
-        --"rust",
-        --"c"
-    --},
+    ensure_installed = {
+        "lua",
+        "python",
+        "typescript",
+        "html",
+        "javascript",
+        'tsx',
+        'scss',
+        "rust",
+        "c",
+        "dap_repl",
+    },
     rainbow = {
         enable = true,
         -- disable = { "jsx", "cpp" }, list of languages you want to disable the plugin for

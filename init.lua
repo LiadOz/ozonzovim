@@ -28,3 +28,9 @@ if stat then
     custom_config.setup()
   end
 end
+
+vim.filetype.add({
+  extension = {
+    keymap = 'keymap'
+  }
+})

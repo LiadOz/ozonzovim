@@ -14,6 +14,11 @@ vim.o.mouse = nil
 vim.o.foldmethod = 'expr'
 vim.o.foldexpr = 'nvim_treesitter#foldexpr()'
 vim.o.foldlevel = 99
+vim.o.spell = true
+vim.o.scrolloff = 15
+vim.o.breakindent = true  -- when line wraps set its indent to the same level as previous line
+vim.o.cursorline = true
+vim.o.splitkeep = "screen"
 --vim.o.cmdheight = 0
 require('nightfox').setup {
   options = {

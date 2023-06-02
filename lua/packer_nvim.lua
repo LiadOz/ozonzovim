@@ -59,7 +59,6 @@ local default_plugins = {
   'nvim-lualine/lualine.nvim',
   'kyazdani42/nvim-web-devicons',
   'rcarriga/nvim-notify',
-  'nvim-treesitter/playground',
   {
     'catppuccin/nvim',
     name = 'catppuccin'
@@ -119,6 +118,14 @@ local default_plugins = {
   'saadparwaiz1/cmp_luasnip',
   'onsails/lspkind.nvim',
   --------------------------------------
+  {
+    'karb94/neoscroll.nvim',
+    config = function()
+      require('neoscroll').setup({
+        easing_function = "sine"
+      })
+    end
+  }
 }
 
 local ok, host_plugin_config = pcall(require, 'host_configs.current_host.host_config')

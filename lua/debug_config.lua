@@ -2,7 +2,7 @@ local M = {}
 
 local dap = require('dap')
 
-require('nvim-dap-repl-highlights').setup()
+local rh = require('nvim-dap-repl-highlights')
 
 dap.adapters.python = function(cb, config)
   local function is_multiline(text)
@@ -20,14 +20,14 @@ dap.adapters.python = function(cb, config)
       type = 'server',
       host = '127.0.0.1',
       port = 1337,
-      is_multiline = is_multiline
+      is_multiline = is_multiline,
     })
   else
     cb({
       type = 'executable',
       command = 'python',
       args = {'-m', 'debugpy.adapter'},
-      is_multiline = is_multiline
+      is_multiline = is_multiline,
     })
   end
 end
@@ -37,7 +37,6 @@ local python_server_config = {
   request = 'attach',
   name = 'Python: Attach To Server',
   justMyCode = false,
-  repl_lang = 'python',
 }
 
 dap.configurations.python = {
@@ -48,7 +47,6 @@ dap.configurations.python = {
     request = "launch",
     program = "${file}",
     justMyCode = false,
-    repl_lang = 'python',
   },
   {
     name = "Python: Current File (Integrated Terminal)",
@@ -57,7 +55,6 @@ dap.configurations.python = {
     program = "${file}",
     console = "integratedTerminal",
     justMyCode = false,
-    repl_lang = 'python',
   },
 }
 
@@ -74,7 +71,6 @@ for _, language in ipairs({ "typescript", "javascript" }) do
       name = "Launch file",
       program = "${file}",
       cwd = "${workspaceFolder}",
-      repl_lang = language,
     },
   }
 end
@@ -90,7 +86,6 @@ dap.configurations.lua = {
     type = 'nlua',
     request = 'attach',
     name = "Attach to running Neovim instance",
-    repl_lang = 'lua'
   }
 }
 
@@ -103,7 +98,7 @@ meta.setup({
 })
 
 local function toggle_dap_repl()
-  dap.repl.toggle({height = 10})
+  dap.repl.toggle({height = 15})
   vim.cmd('wincmd p')
   local filetype = vim.api.nvim_buf_get_option(0, "filetype")
   if filetype == 'dap-repl' then
@@ -210,7 +205,8 @@ local mappings = {
     N = { function() require('osv').launch({port = 8086}) end, 'debug this instance' },
     f = { toggle_frames_widget, 'current frames' },
     w = { function() print(vim.inspect(meta.get_all_breakpoints())) end, 'query meta breakpoints' },
-    W = { function() print(vim.inspect(meta.get_all_hooks())) end, 'query hooks mapping' }
+    W = { function() print(vim.inspect(meta.get_all_hooks())) end, 'query hooks mapping' },
+    R = { rh.setup_highlights, 'Custom repl highlight setup' }
   }
 }
 wk.register(mappings, { prefix = "<leader>" })

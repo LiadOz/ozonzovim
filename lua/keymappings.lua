@@ -3,6 +3,7 @@ local wk = require('which-key')
 
 local proj_dir = require('project_utils').get_cwd_project_dir
 local telescope = require('telescope.builtin')
+local cwd_change_wrapper = require('telescope_utils').cwd_change_wrapper
 
 require('toggleterm').setup({
     open_mapping = [[<c-t>]],
@@ -37,14 +38,14 @@ local mappings = {
     },
     f = {
         name = 'find+',
-        f = { function() telescope.find_files() end, 'find files' },
-        F = { function() telescope.find_files({ hidden = true }) end, 'find files (hidden)' },
-        s = { "<cmd>lua require('telescope.builtin').resume()<cr>", 'resume last' },
-        g = { "<cmd>lua require('telescope.builtin').live_grep()<cr>", 'grep' },
-        c = { "<cmd>lua require('telescope.builtin').grep_string()<cr>", 'grep cursor' },
-        p = { "<cmd>lua require('telescope.builtin').git_files()<cr>", 'project' },
-        h = { "<cmd>lua require('telescope.builtin').help_tags()<cr>", 'help' },
-        r = { "<cmd>lua require('telescope.builtin').oldfiles()<cr>", 'recent files' },
+        f = { cwd_change_wrapper(telescope.find_files), 'find files' },
+        F = { function() cwd_change_wrapper(telescope.find_files)({ hidden = true }) end, 'find files (hidden)' },
+        s = { telescope.resume, 'resume last' },
+        g = { cwd_change_wrapper(telescope.live_grep), "grep" },
+        c = { cwd_change_wrapper(telescope.grep_string), "grep cursor" },
+        p = { telescope.git_files, 'project' },
+        h = { telescope.help_tags, 'help' },
+        r = { telescope.oldfiles, 'recent files' },
         R = { function() telescope.oldfiles({ only_cwd = true }) end, 'recent files (cwd)' }
     },
     p = {
@@ -76,6 +77,7 @@ local mappings = {
     g = {
         name = 'git+',
         b = { function() vim.cmd('Git blame --date=relative --color-by-age') end, 'blame' },
+        B = { telescope.git_bcommits, 'buffer commits' },
         g = { function() vim.cmd('Git') end, 'git menu' },
         c = { function() telescope.git_branches() end, 'branches' },
         s = { function() telescope.git_status() end, 'status' },
@@ -84,6 +86,7 @@ local mappings = {
         L = { function() vim.cmd('GitGutterLineHighlightsToggle') end, 'highlight lines' },
         f = { function() vim.cmd('GitGutterFold') end, 'fold' },
         h = { function() vim.cmd('GitGutterStageHunk') end, 'stage hunk' },
+        H = { telescope.git_commits, 'project commits' }
     },
     t = {
         name = 'toggle+',
@@ -93,7 +96,7 @@ local mappings = {
         g = { function() _lazygit_toggle() end, 'lazygit' },
         s = { function() slash_term() end, 'slash' },
         d = { require("lsp_lines").toggle, 'diagnostics' },
-        p = { ':TSPlaygroundToggle<CR>', 'treesitter playground' }
+        p = { vim.treesitter.inspect_tree, 'inspect tree' },
     },
     e = {
         name = 'edit+',
