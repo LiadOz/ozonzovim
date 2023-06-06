@@ -194,6 +194,7 @@ local mappings = {
     name = 'debug+',
     b = { function() meta.toggle_meta_breakpoint() end, 'toggle breakpoint' },
     B = { function() meta.toggle_meta_breakpoint({meta = {persistent = true}}) end, 'toggle Preakpoint' },
+    C = { meta.put_conditional_breakpoint, 'conditional breakpoint' },
     m = { function() meta.toggle_meta_breakpoint({}, nil, true) end, 'toggle meta breakpoint' },
     M = { function() meta.toggle_meta_breakpoint({meta = {persistent = true}}, nil, true) end, 'toggle meta Preakpoint' },
     h = { function() meta.toggle_hook_breakpoint() end, 'toggle hook breakpoint' },
