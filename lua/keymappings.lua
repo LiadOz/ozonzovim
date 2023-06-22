@@ -17,7 +17,7 @@ local function _lazygit_toggle()
 end
 
 local function slash_term()
-    local test_path = require('slash_utils').cp_test_path()
+    local test_path = require('python_utils').cp_test_path()
     local term = Terminal:new({ cmd = "slash run -s ibox609" .. test_path, hidden = true, close_on_exit = false })
     term:toggle()
 end
@@ -97,6 +97,7 @@ local mappings = {
         s = { function() slash_term() end, 'slash' },
         d = { require("lsp_lines").toggle, 'diagnostics' },
         p = { vim.treesitter.inspect_tree, 'inspect tree' },
+        h = { ':nohlsearch<CR>', 'search hl' },
     },
     e = {
         name = 'edit+',
