@@ -18,12 +18,19 @@ local function get_curr_func ()
     local func_name = vim.treesitter.query.get_node_text(name_node, bufnr)
     return func_name
 end
-M.cp_test_path = function ()
+M.cp_test_path = function (is_pytest)
     local func_name = get_curr_func()
     if not func_name then
         return ''
     end
-    local path = vim.fn.expand('%') .. ':' .. func_name
+    local path = vim.fn.expand('%') .. ':'
+    print(path)
+    if is_pytest then
+      path = path .. ':'
+    end
+    print(path)
+    path = path .. func_name
+    print(path)
     vim.fn.setreg('*', path)
     require('notify')(path, 'info', {title='Test path'})
     return path
