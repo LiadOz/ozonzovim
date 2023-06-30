@@ -33,7 +33,12 @@ local default_plugins = {
   'nvim-treesitter/nvim-treesitter',
   'ahmedkhalf/project.nvim',
   'famiu/bufdelete.nvim',
-  'jiangmiao/auto-pairs',
+  {
+    'windwp/nvim-autopairs',
+    config = function ()
+      require("nvim-autopairs").setup {}
+    end
+  },
 
   'tpope/vim-fugitive',
   'airblade/vim-gitgutter',
@@ -95,7 +100,16 @@ local default_plugins = {
   "theHamsta/nvim-dap-virtual-text",
   "rcarriga/cmp-dap",
   "ii14/neorepl.nvim",
-  "stevearc/dressing.nvim",
+  {
+    "stevearc/dressing.nvim",
+    config = function()
+      require('dressing').setup({
+        input = {
+          enabled = true,
+        },
+      })
+    end
+  },
   "jbyuki/one-small-step-for-vimkind",
   {
     "mxsdev/nvim-dap-vscode-js",

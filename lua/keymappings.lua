@@ -110,7 +110,7 @@ local mappings = {
         v = { function() telescope.vim_options() end, 'vim options' },
         r = { function() telescope.reloader() end, 'reloader' },
         R = { ':source $MYVIMRC<cr> ', 'Reload nvim' },
-        s = { function() vim.api.nvim_cmd({ cmd = 'source', args = { '%' } }, {}) end, 'source file' }
+        s = { function() vim.api.nvim_cmd({ cmd = 'source', args = { '%' } }, {}) end, 'source file' },
     },
     j = {
         name = 'jump+',
