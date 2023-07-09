@@ -15,7 +15,8 @@ M.host_additional_plugins = {
   '~/projects/nvim_plugins/nvim-ts-rainbow',
   'simrat39/rust-tools.nvim',
   '~/projects/nvim_plugins/nvim-dap-repl-highlights',
-  '~/projects/nvim_plugins/nvim-cmp'
+  '~/projects/nvim_plugins/nvim-cmp',
+  '~/projects/nvim_plugins/otter.nvim',
 }
 
 return M

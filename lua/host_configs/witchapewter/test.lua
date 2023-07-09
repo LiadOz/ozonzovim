@@ -182,84 +182,6 @@ local misc = require('cmp.utils.misc')
 local cmp = require('cmp')
 local source = {}
 
-source.new = function(wrapped_source)
-  local self = setmetatable({_source = wrapped_source}, {__index = source})
-  return self
-end
-
-source.is_available = function()
-  return true
-end
-
-source.get_debug_name = function(self)
-  if self._source.get_debug_name then
-    return 'moved source ' .. (self._source:get_debug_name() or '')
-  end
-end
-
-source.complete = function(self, params, callback)
-  local name = self:get_debug_name()
-  if name == nil then
-    name = ''
-  end
-  if name ~= 'moved source nvim_lsp:pyright' then
-    callback(nil)
-    return
-  end
-  print("activating completion for source " .. name)
-  --vim.api.nvim_win_set_cursor(1000, {49, 5})
-  local win = vim.api.nvim_get_current_win()
-  vim.api.nvim_set_current_win(1000)
-  params.context.bufnr = vim.fn.bufnr()
-  --vim.print(params)
-  self._source:complete(params, function(results)
-    print('finished completion', name)
-    callback(results)
-    --vim.wait(500, nil, 1)
-    --print('hello')
-    --vim.wait(500, nil, 1)
-  end)
-  --vim.wait(50, nil, 1)
-  vim.api.nvim_set_current_win(win)
-end
-
--- the following section is so bad, please find out how to do it properly
-function source:get_position_encoding_kind()
-  if self._source.get_position_encoding_kind then
-    return self._source:get_position_encoding_kind()
-  end
-end
-
-function source:get_keyword_pattern(params)
-  if self._source.get_keyword_pattern then
-    return self._source:get_keyword_pattern(params)
-  end
-end
-
-function source:get_trigger_characters()
-  if self._source.get_trigger_characters then
-    return self._source:get_trigger_characters()
-  end
-end
-
-function source:resolve(completion_item, callback)
-  if self._source.resolve then
-    --local win = vim.api.nvim_get_current_win()
-    --vim.api.nvim_set_current_win(1000)
-    local result = self._source:resolve(completion_item, callback)
-    --vim.api.nvim_set_current_win(win)
-    return result
-  end
-end
-
-function source:execute(completion_item, callback)
-  if self._source.execute then
-    return self._source:execute(completion_item, callback)
-  end
-end
--- end of terrible section
-
-
 vim.keymap.set('n', ' rS', ':messages<cr>', {desc = 'messages'})
 
 local function treesitter_highlight(input)
@@ -274,40 +196,26 @@ local function treesitter_highlight(input)
   return highlights
 end
 
-local count = 0 -- for some reason 4 nvim_lsp sources are created, because there are two in core:get_sources with the same name, no idea why.
-local wrapped_sources = {}
+local meta = require('meta-breakpoints.input_completions.source')
+local MergedBuff = require('meta-breakpoints.input_completions.buffer').MergedBuff
 local use_input = true
-local function python_input()
+local function new_input()
   local sources_config = {}
+  local source_names = {}
   local core = cmp.core
+  local merged_buff = MergedBuff.new(vim.api.nvim_get_current_buf())
+  local row = vim.api.nvim_win_get_cursor(0)[1]
+  vim.print("main buffer " .. vim.api.nvim_get_current_buf())
   for _, s in ipairs(core:get_sources()) do
-    local original_source = s:get_underlying() -- consider using s.source?
-    local source_config = wrapped_sources[original_source]
-    if source_config == nil then
-      local wrapped_source = source.new(original_source)
-      source_config = misc.copy(s:get_source_config())
-      if source_config.name ~= 'nvim_lsp' then
-        print('skipping source', source_config.name)
-        goto continue
-      end
-      source_config.name = "wrapped_" .. (source_config.name or '') .. count
-      count = count + 1
-      local override_functions = {'is_available', 'get_keyword_pattern', 'get_trigger_characters'}
-      for _, func_name in ipairs(override_functions) do
-        if original_source[func_name] then
-          local buffer_value = original_source[func_name](original_source, source_config)
-          wrapped_source[func_name] = function()
-            return buffer_value
-          end
-        end
-      end
-      cmp.register_source(source_config.name, wrapped_source)
-      wrapped_sources[original_source] = source_config
+    local override_functions = {'is_available', 'get_keyword_pattern', 'get_trigger_characters'}
+    local source_name = meta.register_meta_source(s, override_functions)
+    if source_names[source_name] == nil then
+      source_names[source_name] = true
+      local source_config = misc.copy(s:get_source_config())
+      source_config.name = source_name
+      table.insert(sources_config, source_config)
     end
-    table.insert(sources_config, source_config)
-    ::continue::
   end
-  vim.print(sources_config)
   if use_input then
     vim.ui.input({prompt = "what?", highlight = treesitter_highlight}, function(result)
       if result ~= nil then
@@ -318,14 +226,14 @@ local function python_input()
     local bufnr = vim.api.nvim_create_buf({}, {})
     vim.api.nvim_set_current_buf(bufnr)
   end
+  local bufnr = vim.api.nvim_get_current_buf()
+  vim.print("input buffer " .. bufnr)
+  merged_buff:split(row, bufnr)
+  meta.register_buffer_data(bufnr, merged_buff)
+  vim.print(sources_config)
   cmp.setup.buffer({
     enabled = true,
     sources = sources_config,
   })
-  print('registered sources ' .. #sources_config)
-  print('sources count after setup ' .. #core:get_sources())
-  --for _, s in ipairs(core:get_sources()) do
-    --print(s:get_name())
-  --end
 end
-vim.keymap.set('n', ' ri', python_input, {desc = 'test input'})
+vim.keymap.set('n', ' ri', new_input, {desc = 'test input'})

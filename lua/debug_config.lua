@@ -4,6 +4,8 @@ local dap = require('dap')
 
 local rh = require('nvim-dap-repl-highlights')
 
+dap.defaults.fallback.switchbuf = 'usetab,uselast'
+
 dap.adapters.python = function(cb, config)
   local function is_multiline(text)
     if string.sub(text, -1) == ':' then

@@ -118,6 +118,14 @@ local default_plugins = {
   "liadoz/meta-breakpoints.nvim",
   "liadoz/nvim-dap-repl-highlights",
 
+  {
+    "danymat/neogen",
+    config = function()
+        require('neogen').setup({snippet_engine = "luasnip"})
+    end,
+    requires = "nvim-treesitter/nvim-treesitter",
+  },
+
   --------------------------------------
   -- completion plugins
   'hrsh7th/cmp-nvim-lsp',
