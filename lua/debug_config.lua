@@ -93,10 +93,12 @@ dap.configurations.lua = {
 
 
 local meta = require('meta-breakpoints')
+require('meta-breakpoints.log').level = 'trace'
 meta.setup({
-  meta_breakpoint_sign = '',
-  hook_breakpoint_sign = '',
-  allow_persistent_breakpoints = true,
+  signs = {
+    meta_breakpoint_sign = '',
+    hook_breakpoint_sign = '',
+  },
 })
 
 local function toggle_dap_repl()
@@ -195,12 +197,12 @@ local mappings = {
   d = {
     name = 'debug+',
     b = { function() meta.toggle_meta_breakpoint() end, 'toggle breakpoint' },
-    B = { function() meta.toggle_meta_breakpoint({meta = {persistent = true}}) end, 'toggle Preakpoint' },
-    C = { meta.put_conditional_breakpoint, 'conditional breakpoint' },
-    m = { function() meta.toggle_meta_breakpoint({}, nil, true) end, 'toggle meta breakpoint' },
-    M = { function() meta.toggle_meta_breakpoint({meta = {persistent = true}}, nil, true) end, 'toggle meta Preakpoint' },
+    B = { function() meta.toggle_meta_breakpoint({}, {persistent = true}) end, 'toggle Preakpoint' },
+    C = { function() meta.put_conditional_breakpoint() end, 'conditional breakpoint' },
+    m = { function() meta.toggle_meta_breakpoint({}, {}, nil, true) end, 'toggle meta breakpoint' },
+    M = { function() meta.toggle_meta_breakpoint({}, {persistent = true}, nil, true) end, 'toggle meta Preakpoint' },
     h = { function() meta.toggle_hook_breakpoint() end, 'toggle hook breakpoint' },
-    H = { function() meta.toggle_hook_breakpoint({meta = {persistent = true}}) end, 'toggle hook Preakpoint' },
+    H = { function() meta.toggle_hook_breakpoint({}, {persistent = true}) end, 'toggle hook Preakpoint' },
     r = { toggle_dap_repl, 'toggle repl' },
     D = { function() dap.disconnect({ terminateDebuggee = false }) end, 'disconnect debugger' },
     e = { function() setup_nvim_server() end, 'setup nvim server' },

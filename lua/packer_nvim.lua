@@ -51,6 +51,7 @@ local default_plugins = {
   },
   {
     'j-hui/fidget.nvim',
+    tag = 'legacy',
     config = function()
         require('fidget').setup {}
     end
@@ -88,7 +89,7 @@ local default_plugins = {
     end
   },
   "akinsho/toggleterm.nvim",
-  "mrjones2014/nvim-ts-rainbow",
+  "hiphish/rainbow-delimiters.nvim",
   {
     "nvim-treesitter/nvim-treesitter-context",
     config = function()
@@ -125,6 +126,8 @@ local default_plugins = {
     end,
     requires = "nvim-treesitter/nvim-treesitter",
   },
+  "folke/neodev.nvim",
+  "kosayoda/nvim-lightbulb",
 
   --------------------------------------
   -- completion plugins

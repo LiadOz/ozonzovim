@@ -6,26 +6,20 @@ require('mason').setup {}
 require('mason-lspconfig').setup {
   ensure_installed = { 'lua_ls', 'pyright' }
 }
+
+require('neodev').setup({
+  override = function (root_dir, library)
+    library.plugins = true -- enable plugins for all lua projects since I only use lua for plugins
+    --if string.match(root_dir, "meta.breakpoints.nvim") then
+      --library.plugins = true
+    --end
+  end
+})
+
 local lspconfig = require('lspconfig')
 
 lspconfig.lua_ls.setup {
   capabilities = cmp_capabilities,
-  settings = {
-    Lua = {
-      runtime = {
-        version = 'LuaJIT',
-      },
-      diagnostics = { globals = { 'vim' } },
-      workspace = {
-        library = {
-          [vim.fn.expand('$VIMRUNTIME/lua')] = true,
-          [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
-          [vim.fn.stdpath('data') .. '/site/pack/packer/start'] = true,
-          [vim.fn.stdpath('config') .. '/lua'] = true,
-        }
-      }
-    }
-  }
 }
 
 lspconfig.pyright.setup {
@@ -70,3 +64,9 @@ vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.s
 vim.diagnostic.config {
   signs = false,
 }
+
+require("nvim-lightbulb").setup({
+  autocmd = { enabled = true },
+  sign = { enabled = false},
+  virtual_text = { enabled = true},
+})
