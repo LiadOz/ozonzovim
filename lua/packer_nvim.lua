@@ -118,6 +118,12 @@ local default_plugins = {
   },
   "liadoz/meta-breakpoints.nvim",
   "liadoz/nvim-dap-repl-highlights",
+  {
+    "tiagovla/scope.nvim",
+    config = function()
+      require("scope").setup()
+    end
+  },
 
   {
     "danymat/neogen",
