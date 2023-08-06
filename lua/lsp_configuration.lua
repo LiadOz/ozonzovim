@@ -4,7 +4,7 @@ local cmp_capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 require('mason').setup {}
 require('mason-lspconfig').setup {
-  ensure_installed = { 'lua_ls', 'pyright' }
+  ensure_installed = { 'lua_ls' }
 }
 
 require('neodev').setup({
@@ -22,41 +22,64 @@ lspconfig.lua_ls.setup {
   capabilities = cmp_capabilities,
 }
 
-lspconfig.pyright.setup {
+--lspconfig.pyright.setup {
+    --capabilities = cmp_capabilities,
+    --root_dir = function(fname)
+        --local orig_config = require('lspconfig.server_configurations.pyright')
+        --local project_path = get_project_path(fname)
+        --if project_path then
+            --return project_path
+        --end
+        --return orig_config.default_config.root_dir(fname)
+    --end,
+    --handlers = {
+        --['textDocument/publishDiagnostics'] = function() end
+    --}
+--}
+
+lspconfig.pylsp.setup({
   capabilities = cmp_capabilities,
   root_dir = function(fname)
-    local orig_config = require('lspconfig.server_configurations.pyright')
+    local orig_config = require('lspconfig.server_configurations.pylsp')
     local project_path = get_project_path(fname)
     if project_path then
       return project_path
     end
     return orig_config.default_config.root_dir(fname)
   end,
-  handlers = {
-    ['textDocument/publishDiagnostics'] = function() end
-  }
-}
+  settings = {
+    pylsp = {
+      plugins = {
+        pylint = {
+          enabled = true,
+        },
+        pycodestyle = {
+          enabled = false,
+        },
+        pyflakes = {
+          enabled = false,
+        },
+        --rope_autoimport = {
+          --enabled = true,
+        --},
+        pyls_mypy = {
+          enabled = true,
+        },
+        pyls_isort = {
+          enabled = true,
+        },
+        pylsp_rope = {
+          enabled = true,
+        },
+      },
+    },
+  },
+})
 
 lspconfig.tsserver.setup {}
 lspconfig.tailwindcss.setup {}
 lspconfig.rust_analyzer.setup {}
 lspconfig.clangd.setup {}
-
---local nls_root_pattern = require('null-ls.utils').root_pattern
-require('null-ls').setup({
-  sources = {
-    require('null-ls').builtins.diagnostics.pylint,
-  },
-  --root_dir = function (fname)
-  --for _, value in pairs(projects_dirs) do
-  --if fname:find(value) then
-  --print(value)
-  --return value
-  --end
-  --end
-  --return nls_root_pattern(".null-ls-root", "Makefile", ".git")(fname)
-  --end
-})
 
 vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { border = 'rounded' })
 vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = 'rounded' })

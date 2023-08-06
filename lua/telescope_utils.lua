@@ -22,14 +22,16 @@ local function find_dirs(opts, ctx)
   -- picker used to look for a directory and call a callback with the result
   opts = opts or {}
   opts.cwd = opts.cwd or vim.loop.cwd()
-  if string.sub(opts.cwd, -1) ~= '/' then
-    opts.cwd = opts.cwd .. '/'
+  local default_text = opts.cwd
+  if string.sub(default_text, -1) ~= '/' then
+    print(default_text .. "  adding / at the end")
+    default_text = default_text .. '/'
   end
 
   pickers
     .new(require('telescope.themes').get_dropdown(opts), {
       prompt_title = "Find Directory",
-      default_text = opts.cwd,
+      default_text = default_text,
       finder = finders.new_oneshot_job({"find", opts.cwd, "-type", "d", "-not", "-path", "*/.git/*", "-not", "-path", "*/node_modules/*"}, opts),
       sorter = conf.generic_sorter(opts),
       attach_mappings = function(prompt_bufnr, map)

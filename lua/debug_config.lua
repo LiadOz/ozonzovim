@@ -39,6 +39,9 @@ local python_server_config = {
   request = 'attach',
   name = 'Python: Attach To Server',
   justMyCode = false,
+  rules = {
+    {path = "**/runpy.py", include = false},
+  },
 }
 
 dap.configurations.python = {
