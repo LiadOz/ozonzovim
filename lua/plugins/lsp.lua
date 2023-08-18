@@ -16,12 +16,45 @@ plugins.add_plugin({
         }
       }
     }
-    lspconfig.pyright.setup {
+
+    lspconfig.pylsp.setup({
       capabilities = cmp_capabilities,
-      handlers = {
-        ['textDocument/publishDiagnostics'] = function() end
-      }
-    }
+      --root_dir = function(fname)
+      --local orig_config = require('lspconfig.server_configurations.pylsp')
+      --local project_path = get_project_path(fname)
+      --if project_path then
+      --return project_path
+      --end
+      --return orig_config.default_config.root_dir(fname)
+      --end,
+      settings = {
+        pylsp = {
+          plugins = {
+            pylint = {
+              enabled = true,
+            },
+            pycodestyle = {
+              enabled = false,
+            },
+            pyflakes = {
+              enabled = false,
+            },
+            --rope_autoimport = {
+            --enabled = true,
+            --},
+            pyls_mypy = {
+              enabled = true,
+            },
+            pyls_isort = {
+              enabled = true,
+            },
+            pylsp_rope = {
+              enabled = true,
+            },
+          },
+        },
+      },
+    })
     lspconfig.tsserver.setup {}
     lspconfig.tailwindcss.setup {}
     lspconfig.rust_analyzer.setup {}
@@ -42,7 +75,6 @@ plugins.add_plugin({
       opts = {
         ensure_installed = {
           'lua_ls',
-          'pyright'
         }
       }
     },
