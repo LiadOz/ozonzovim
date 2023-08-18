@@ -19,7 +19,7 @@ plugins.add_plugin({ "famiu/bufdelete.nvim", cmd = "Bdelete" })
 plugins.add_plugin({
   "preservim/nerdcommenter",
   event = 'VeryLazy',
-  config = function()
+  init = function()
     vim.g.NERDCreateDefaultMappings = 0
   end
 })
