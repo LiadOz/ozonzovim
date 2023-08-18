@@ -1,3 +1,4 @@
+vim.g.mapleader = ' '
 vim.wo.relativenumber = true
 vim.o.timeoutlen = 500
 vim.o.number = true
@@ -12,7 +13,6 @@ vim.o.autoread = true
 vim.o.laststatus = 3
 vim.o.mouse = nil
 vim.o.foldmethod = 'expr'
-vim.o.foldexpr = 'nvim_treesitter#foldexpr()'
 vim.o.foldlevel = 99
 vim.o.spell = true
 vim.o.scrolloff = 15
@@ -20,25 +20,6 @@ vim.o.breakindent = true  -- when line wraps set its indent to the same level as
 vim.o.cursorline = true
 vim.o.splitkeep = "screen"
 --vim.o.cmdheight = 0
-require('nightfox').setup {
-  options = {
-    transparent = true,
-    styles = {
-      comments = 'italic',
-      keywords = 'bold',
-      types = 'bold',
-      conditionals = "italic",
-      constants = "NONE",
-      functions = "italic",
-      numbers = "NONE",
-      operators = "NONE",
-      strings = "NONE",
-      variables = "NONE",
-    }
-  }
-}
-vim.cmd('colorscheme nightfox')
-require('nvim-web-devicons').setup {}
 
 --vim.g.catppuccin_flavour = "frappe"
 --vim.cmd('colorscheme catppuccin')

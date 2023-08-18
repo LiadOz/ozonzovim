@@ -1,36 +1,17 @@
-require('packer_nvim')
-require('keymappings')
+require("defaults")
+local plugin_manager = require('core.plugin_manager')
+local plugins = require('core.plugins')
+local host_config = require('core.custom_config')
 
-require('defaults')
-require('completion')
-require('lsp_configuration')
-require('etc')
-local debug = require('debug_config')
+plugin_manager.bootstrap_plugin_manager()
 
-require('lualine').setup {
-    options = {
-        section_separators = { left = '', right = '' },
-        component_separators = { left = '|', right = '|' }
-    },
-    sections = {
-        lualine_y = {
-            { debug.lualine_component }
-        },
-        lualine_x = {'hostname', 'fileformat', 'filetype'}
-    }
-}
+require("keymappings")
+require("plugins")
 
-local host_config_path = vim.fn.stdpath('config') .. '/lua/host_configs/current_host/init.lua'
-local stat, _ = vim.loop.fs_stat(host_config_path)
-if stat then
-  local custom_config = require('host_configs.current_host')
-  if type(custom_config) == 'table' and custom_config.setup then
-    custom_config.setup()
-  end
-end
+host_config.pre_plugin_setup()
 
-vim.filetype.add({
-  extension = {
-    keymap = 'keymap'
-  }
-})
+
+plugin_manager.install_plugins(plugins.get_plugins())
+
+
+host_config.post_plugin_setup()

@@ -1,20 +1,20 @@
 local M = {}
-local dap = require('dap')
-dap.adapters.cppdbg = {
-    type = 'executable',
-    command = '/Users/loz/nvim/cpptools/extension/debugAdapters/bin/OpenDebugAD7'
-}
+--local dap = require('dap')
+--dap.adapters.cppdbg = {
+    --type = 'executable',
+    --command = '/Users/loz/nvim/cpptools/extension/debugAdapters/bin/OpenDebugAD7'
+--}
 
-dap.adapters.codelldb = {
-    type = 'server',
-    port = 13000,
-    executable = {
-        command = '/Users/loz/.local/share/nvim/mason/bin/codelldb',
-        args = {"--port" , "13000"}
-    }
-}
+--dap.adapters.codelldb = {
+    --type = 'server',
+    --port = 13000,
+    --executable = {
+        --command = '/Users/loz/.local/share/nvim/mason/bin/codelldb',
+        --args = {"--port" , "13000"}
+    --}
+--}
 
-require('dap.ext.vscode').load_launchjs(nil, {cppdbg = {'c', 'cpp'}})
+--require('dap.ext.vscode').load_launchjs(nil, {cppdbg = {'c', 'cpp'}})
 --dap.configurations.cpp = {
     ----{
         ----name = 'Attach to lldb',
@@ -66,7 +66,17 @@ require('dap.ext.vscode').load_launchjs(nil, {cppdbg = {'c', 'cpp'}})
 --}
 
 --dap.configurations.c = dap.configurations.cpp
-function M.setup()
+
+function M.pre_plugin_setup()
+  local plugins = require('core.plugins')
+
+  plugins.add_plugin({
+    "liadoz/meta-breakpoints.nvim",
+    dir = "~/projects/nvim_plugins/meta-breakpoints.nvim"
+  })
+end
+
+function M.post_plugin_setup()
 end
 
 return M

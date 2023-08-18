@@ -1,0 +1,7 @@
+{
+  "runtime": {
+    "special": {
+      "lazy_require": "require",
+    },
+  },
+}

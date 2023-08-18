@@ -177,10 +177,7 @@ local function setup_buf_help()
 end
 vim.keymap.set('n', ' rs', setup_buf_help, {desc = 'setup buf help'})
 
-local misc = require('cmp.utils.misc')
 
-local cmp = require('cmp')
-local source = {}
 
 vim.keymap.set('n', ' rS', ':messages<cr>', {desc = 'messages'})
 
@@ -196,16 +193,17 @@ local function treesitter_highlight(input)
   return highlights
 end
 
-local meta = require('meta-breakpoints.input_completions.source')
-local MergedBuff = require('meta-breakpoints.input_completions.buffer').MergedBuff
+--local meta = require('meta-breakpoints.input_completions.source')
+--local MergedBuff = require('meta-breakpoints.input_completions.buffer').MergedBuff
 local use_input = true
 local function new_input()
+  local cmp = require('cmp')
+  local misc = require('cmp.utils.misc')
   local sources_config = {}
   local source_names = {}
   local core = cmp.core
   local merged_buff = MergedBuff.new(vim.api.nvim_get_current_buf())
   local row = vim.api.nvim_win_get_cursor(0)[1]
-  vim.print("main buffer " .. vim.api.nvim_get_current_buf())
   for _, s in ipairs(core:get_sources()) do
     local override_functions = {'is_available', 'get_keyword_pattern', 'get_trigger_characters'}
     local source_name = meta.register_meta_source(s, override_functions)
@@ -223,7 +221,7 @@ local function new_input()
       end
     end)
   else
-    local bufnr = vim.api.nvim_create_buf({}, {})
+    local bufnr = vim.api.nvim_create_buf(false, false)
     vim.api.nvim_set_current_buf(bufnr)
   end
   local bufnr = vim.api.nvim_get_current_buf()
