@@ -1,6 +1,11 @@
 local plugins = require('core.plugins')
 
-plugins.add_plugin("tiagovla/scope.nvim")
+plugins.add_plugin({
+  "tiagovla/scope.nvim",
+  config = function()
+    require('scope').setup()
+  end,
+})
 plugins.add_plugin({ "windwp/nvim-autopairs", event = "InsertEnter", opts = {} })
 plugins.add_plugin({ "jghauser/mkdir.nvim", event = "CmdlineEnter" }) -- automatically create missing directories
 plugins.add_plugin({

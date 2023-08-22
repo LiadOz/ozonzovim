@@ -72,7 +72,7 @@ function M.pre_plugin_setup()
 
   plugins.add_plugin({
     "liadoz/meta-breakpoints.nvim",
-    dir = "~/projects/nvim_plugins/meta-breakpoints.nvim"
+    dir = "~/ozonzono/meta-breakpoints.nvim"
   })
 end
 

@@ -79,7 +79,7 @@ function M.get_dap_lualine_component()
 end
 
 M.remote_continue = function()
-  require('dap').run(require('core.plugins.dap').python_server_config)
+  require('dap').run(require('plugins.dap').python_server_config)
 end
 
 local frames_widget = nil
