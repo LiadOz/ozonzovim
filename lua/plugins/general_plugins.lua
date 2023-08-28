@@ -6,6 +6,10 @@ plugins.add_plugin({
     require('scope').setup()
   end,
 })
+plugins.add_plugin({
+  "nvim-lua/plenary.nvim",
+  cmd = {'PlenaryBustedDirectory', 'PlenaryBustedFile'}
+})
 plugins.add_plugin({ "windwp/nvim-autopairs", event = "InsertEnter", opts = {} })
 plugins.add_plugin({ "jghauser/mkdir.nvim", event = "CmdlineEnter" }) -- automatically create missing directories
 plugins.add_plugin({
