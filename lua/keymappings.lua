@@ -33,7 +33,7 @@ local neogen = lazy_require('neogen')
 local tutils = lazy_require('telescope_utils')
 
 -- general key bindings --
-vim.keymap.set('n', '<TAB>', ':b#<cr>', d('prev buffer'))
+vim.keymap.set('n', '<leader><TAB>', ':b#<cr>', d('prev buffer'))
 vim.keymap.set('n', '<leader>a', telescope.commands, d('commands'))
 
 
