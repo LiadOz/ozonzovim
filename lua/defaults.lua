@@ -19,6 +19,9 @@ vim.o.scrolloff = 15
 vim.o.breakindent = true  -- when line wraps set its indent to the same level as previous line
 vim.o.cursorline = true
 vim.o.splitkeep = "screen"
+vim.o.tabstop = 2
+vim.o.shiftwidth = 2
+vim.o.expandtab = true
 --vim.o.cmdheight = 0
 
 --vim.g.catppuccin_flavour = "frappe"

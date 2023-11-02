@@ -8,12 +8,6 @@ function M.pre_plugin_setup()
     dir = '~/projects/nvim_plugins/nvim-dap'
   })
   plugins.add_plugin({
-    "simrat39/rust-tools.nvim",
-    ft = 'rs',
-    opts = {},
-  })
-
-  plugins.add_plugin({
     "liadoz/meta-breakpoints.nvim",
     dir = "~/projects/nvim_plugins/meta-breakpoints.nvim"
   })
