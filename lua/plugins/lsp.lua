@@ -17,8 +17,21 @@ plugins.add_plugin({
       }
     }
 
+    local python_utils = require('utilities.python')
+
     lspconfig.pylsp.setup({
       capabilities = cmp_capabilities,
+      on_init = function(client)
+        if python_utils.is_poetry_installed() then
+          local poetry_env = python_utils.get_poetry_project_path()
+          if poetry_env then
+            client.config.settings.pylsp.plugins.jedi.environment = poetry_env
+            vim.print(client.config.settings)
+            client.notify("workspace/didChangeConfiguration", { settings = client.config.settings })
+            return true
+          end
+        end
+      end,
       --root_dir = function(fname)
       --local orig_config = require('lspconfig.server_configurations.pylsp')
       --local project_path = get_project_path(fname)
@@ -30,6 +43,11 @@ plugins.add_plugin({
       settings = {
         pylsp = {
           plugins = {
+            jedi = {
+              extra_paths = {},
+              env_vars = nil,
+              environment = nil,
+            },
             pylint = {
               enabled = true,
             },
