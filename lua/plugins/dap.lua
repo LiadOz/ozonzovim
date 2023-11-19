@@ -83,15 +83,18 @@ plugins.add_plugin({
   "liadoz/meta-breakpoints.nvim",
   event = 'VeryLazy',
   config = function()
-    local meta = require('meta-breakpoints')
-    require('meta-breakpoints.log').level = 'trace'
-    meta.setup({
+    require('meta-breakpoints.config').setup_opts({
       signs = {
-        meta_breakpoint_sign = '',
-        hook_breakpoint_sign = '',
+        meta_breakpoint = {enabled = {text = ''}, disabled = {text = '', texthl = 'Comment'}},
+        hook_breakpoint = {enabled = {text = ''}, disabled = {text = '', texthl = 'Comment'}},
+        continue_breakpoint = {enabled = { text = '' } , disabled = { text = '', texthl = 'Comment'}}
       },
     })
-  end
+    local meta = require('meta-breakpoints')
+    --require('meta-breakpoints.log').level = 'trace'
+    meta.setup({})
+  end,
+  dependencies = {"nvim-lua/plenary.nvim"}
 })
 
 plugins.add_plugin({

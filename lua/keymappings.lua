@@ -137,17 +137,13 @@ vim.keymap.set('n', ']d', vim.diagnostic.goto_next, d('next diagnostic'))
 local dap = lazy_require('dap')
 local meta = lazy_require('meta-breakpoints')
 local debug_config = require('debug_config')
-vim.keymap.set('n', '<leader>db', meta.toggle_meta_breakpoint, d('toggle breakpoint'))
-vim.keymap.set('n', '<leader>dB', function() meta.toggle_meta_breakpoint({}, { persistent = true }) end,
+vim.keymap.set('n', '<leader>db', function() meta.toggle_breakpoint('meta_breakpoint') end, d('toggle breakpoint'))
+vim.keymap.set('n', '<leader>dB', function() meta.toggle_breakpoint('meta_breakpoint', {persistent = true}) end,
   d('toggle Preakpoint'))
 vim.keymap.set('n', '<leader>dC', meta.put_conditional_breakpoint, d('conditional breakpoint'))
-vim.keymap.set('n', '<leader>dm', function() meta.toggle_meta_breakpoint({}, {}, nil, true) end,
-  d('toggle meta breakpoint'))
-vim.keymap.set('n', '<leader>dM', function() meta.toggle_meta_breakpoint({}, { persistent = true }, nil, true) end,
+vim.keymap.set('n', '<leader>dm', meta.toggle_breakpoint, d('toggle meta breakpoint'))
+vim.keymap.set('n', '<leader>dM', function() meta.toggle_breakpoint(nil, {persistent = true}) end,
   d('toggle meta Preakpoint'))
-vim.keymap.set('n', '<leader>dh', meta.toggle_hook_breakpoint, d('toggle hook breakpoint'))
-vim.keymap.set('n', '<leader>dH', function() meta.toggle_hook_breakpoint({}, { persistent = true }) end,
-  d('toggle hook Preakpoint'))
 vim.keymap.set('n', '<leader>dr', debug_config.toggle_dap_repl, d('toggle repl'))
 vim.keymap.set('n', '<leader>dD', function() dap.disconnect({ terminateDebuggee = false }) end, d('disconnect debugger'))
 vim.keymap.set('n', '<leader>de', debug_config.setup_nvim_server, d('setup nvim server'))
@@ -155,7 +151,7 @@ vim.keymap.set('n', '<leader>dE', debug_config.stop_nvim_server, d('stop nvim se
 vim.keymap.set('n', '<leader>dN', function() require('osv').launch({ port = 8086 }) end, d('debug this instance'))
 vim.keymap.set('n', '<leader>df', debug_config.toggle_frames_widget, d('current frames'))
 vim.keymap.set('n', '<leader>dw', function() vim.print(meta.get_all_breakpoints()) end, d('query meta breakpoints'))
-vim.keymap.set('n', '<leader>dW', function() vim.print(meta.get_all_hooks()) end, d('query hooks mapping'))
+vim.keymap.set('n', '<leader>dg', meta.toggle_breakpoint_state, d('toggle breakpoint state'))
 
 
 plugins.add_plugin({
