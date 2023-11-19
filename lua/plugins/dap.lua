@@ -81,21 +81,20 @@ plugins.add_plugin({
 
 plugins.add_plugin({
   "liadoz/meta-breakpoints.nvim",
-  event = 'VeryLazy',
-  config = function()
-    require('meta-breakpoints.config').setup_opts({
-      signs = {
-        meta_breakpoint = {enabled = {text = ''}, disabled = {text = '', texthl = 'Comment'}},
-        hook_breakpoint = {enabled = {text = ''}, disabled = {text = '', texthl = 'Comment'}},
-        continue_breakpoint = {enabled = { text = '' } , disabled = { text = '', texthl = 'Comment'}}
-      },
-    })
-    local meta = require('meta-breakpoints')
-    --require('meta-breakpoints.log').level = 'trace'
-    meta.setup({})
-  end,
+  event = 'BufReadPre', -- important when using persistent breakpoints
   dependencies = {"nvim-lua/plenary.nvim"}
 })
+
+vim.g.meta_breakpoints = {
+  signs = {
+    MetaBreakpoint = {enabled = {text = ''}, disabled = {text = '', texthl = 'Comment'}},
+    HookBreakpoint = {enabled = {text = ''}, disabled = {text = '', texthl = 'Comment'}},
+    ContinueBreakpoint = {enabled = { text = '' } , disabled = { text = '', texthl = 'Comment'}}
+  },
+  --log = {
+    --level = 'trace'
+  --}
+}
 
 plugins.add_plugin({
   "jbyuki/one-small-step-for-vimkind",
