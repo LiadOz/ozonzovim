@@ -26,7 +26,9 @@ plugins.add_plugin({
           local poetry_env = python_utils.get_poetry_project_path()
           if poetry_env then
             client.config.settings.pylsp.plugins.jedi.environment = poetry_env
-            vim.print(client.config.settings)
+            local pylint_args = string.format("--init-hook='import sys; sys.path.append(\"%s\")'", python_utils.get_poetry_site_packages())
+            table.insert(client.config.settings.pylsp.plugins.pylint.args, pylint_args)
+            client.config.settings.pylsp.plugins.pylsp_mypy.overrides = {"--python-executable", python_utils.get_poetry_executable(), true}
             client.notify("workspace/didChangeConfiguration", { settings = client.config.settings })
             return true
           end
@@ -50,6 +52,7 @@ plugins.add_plugin({
             },
             pylint = {
               enabled = true,
+              args = {},
             },
             pycodestyle = {
               enabled = false,
@@ -60,10 +63,11 @@ plugins.add_plugin({
             --rope_autoimport = {
             --enabled = true,
             --},
-            pyls_mypy = {
+            pylsp_mypy = {
               enabled = true,
+              overrides = {}
             },
-            pyls_isort = {
+            pylsp_isort = {
               enabled = true,
             },
             pylsp_rope = {
