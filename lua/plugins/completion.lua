@@ -6,11 +6,26 @@ local function configure_cmp()
   local cmp = require 'cmp'
   local luasnip = require('luasnip')
   local neogen = require('neogen')
+  local function cmp_tab(fallback)
+    if cmp.visible() then
+      if #cmp.get_entries() == 1 then
+        cmp.confirm({ select = true })
+      else
+        cmp.select_next_item()
+      end
+    elseif luasnip.expand_or_locally_jumpable() then
+      luasnip.expand_or_jump()
+    elseif neogen.jumpable() then
+      neogen.jump_next()
+    else
+      fallback()
+    end
+  end
   cmp.setup({
     snippet = {
       -- REQUIRED - you must specify a snippet engine
       expand = function(args)
-        luasnip.lsp_expand(args.body)   -- For `luasnip` users.
+        luasnip.lsp_expand(args.body) -- For `luasnip` users.
       end,
     },
     enabled = function()
@@ -21,20 +36,29 @@ local function configure_cmp()
       ['<C-u>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
       ['<C-d>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
       ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
-      ['<TAB>'] = cmp.mapping(function(fallback)
-        if cmp.visible() then
-          cmp.select_next_item()
-        elseif luasnip.expand_or_jumpable() then
-          luasnip.expand_or_jump()
-        elseif neogen.jumpable() then
-          neogen.jump_next()
-        else
-          fallback()
-        end
-      end, { 'i', 'c' }),
+      ['<TAB>'] = cmp.mapping({
+        i = cmp_tab,
+        s = cmp_tab,
+        c = function(_)
+          if cmp.visible() then
+            if #cmp.get_entries() == 1 then
+              cmp.confirm({ select = true })
+            else
+              cmp.select_next_item()
+            end
+          else
+            cmp.complete()
+            if #cmp.get_entries() == 1 then
+              cmp.confirm({ select = true })
+            end
+          end
+        end,
+      }),
       ['<S-Tab>'] = cmp.mapping(function(fallback)
         if cmp.visible() then
           cmp.select_prev_item()
+        elseif luasnip.locally_jumpable(-1) then
+          luasnip.jump(-1)
         elseif neogen.jumpable(true) then
           neogen.jump_prev()
         else
@@ -46,7 +70,19 @@ local function configure_cmp()
         i = cmp.mapping.abort(),
         c = cmp.mapping.close(),
       }),
-      ['<CR>'] = cmp.mapping.confirm({ select = false }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+      ["<CR>"] = cmp.mapping({
+        i = function(fallback)
+          if cmp.visible() and cmp.get_active_entry() then
+            cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
+          elseif luasnip.locally_jumpable(1) then
+            luasnip.jump(1)
+          else
+            fallback()
+          end
+        end,
+        s = cmp.mapping.confirm({ select = true }),
+        c = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false }),
+      }),
     },
     sources = cmp.config.sources({
       { name = 'nvim_lsp' },
@@ -60,10 +96,9 @@ local function configure_cmp()
     formatting = {
       fields = { 'menu', 'abbr', 'kind' },
       format = require('lspkind').cmp_format({
-        mode = 'symbol_text',     -- show only symbol annotations
+        mode = 'symbol_text', -- show only symbol annotations
         maxwidth = 50,
         ellipsis_char = '...',
-
         --before = function (entry, vim_item)
         --return vim_item
         --end
@@ -122,7 +157,7 @@ plugins.add_plugin({
 
 plugins.add_plugin({
   "hrsh7th/nvim-cmp",
-  event = {"InsertEnter", "CmdlineEnter"},
+  event = { "InsertEnter", "CmdlineEnter" },
   config = configure_cmp,
   dependencies = {
     "L3MON4D3/LuaSnip",
@@ -142,7 +177,16 @@ plugins.add_plugin({
       "danymat/neogen",
       dependencies = "nvim-treesitter/nvim-treesitter",
       lazy = true,
-      opts = { snippet_engine = "luasnip" },
+      opts = {
+        snippet_engine = "luasnip",
+        languages = {
+          python = {
+            template = {
+              annotation_convention = "reST"
+            }
+          }
+        }
+      },
     }
   }
 })
