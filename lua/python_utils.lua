@@ -15,7 +15,7 @@ local function get_curr_func ()
         return ''
     end
     local name_node = current_node:child(1)
-    local func_name = vim.treesitter.query.get_node_text(name_node, bufnr)
+    local func_name = vim.treesitter.get_node_text(name_node, bufnr)
     return func_name
 end
 M.cp_test_path = function (is_pytest)

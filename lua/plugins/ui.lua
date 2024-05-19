@@ -1,6 +1,6 @@
 local plugins = require('core.plugins')
 
-plugins.add_plugin({ "rcarriga/nvim-notify", event = 'VeryLazy' })
+plugins.add_plugin({ "rcarriga/nvim-notify", event = 'VeryLazy', opts = { background_colour = "#000000" } })
 plugins.add_plugin({
   "stevearc/dressing.nvim",
   event = 'VeryLazy',
