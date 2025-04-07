@@ -6,19 +6,22 @@ plugins.add_plugin({
   config = function()
     local wk = require('which-key')
     wk.setup({})
-    local mappings = {
-      b = { name = '+buffer' },
-      d = { name = '+debug' },
-      f = { name = '+file' },
-      p = { name = '+project' },
-      c = { name = '+code' },
-      w = { name = '+workspace' },
-      g = { name = '+git' },
-      t = { name = '+toggle' },
-      e = { name = '+edit' },
-      o = { name = '+other' },
-    }
-    wk.register(mappings, { mode = { "n", "v" }, prefix = "<leader>" })
+    local mappings = {{
+      mode = {"n", "v"},
+      {"<leader>a", name = '+ai'},
+      {"<leader>b", name = '+buffer'},
+      {"<leader>d", name = '+debug'},
+      {"<leader>f", name = '+file'},
+      {"<leader>p", name = '+project'},
+      {"<leader>c", name = '+code'},
+      {"<leader>w", name = '+workspace'},
+      {"<leader>g", name = '+git'},
+      {"<leader>h", name = '+perforce'},
+      {"<leader>t", name = '+toggle'},
+      {"<leader>e", name = '+edit'},
+      {"<leader>o", name = '+other'},
+    }}
+    wk.add(mappings)
   end
 })
 
@@ -34,7 +37,6 @@ local tutils = lazy_require('telescope_utils')
 
 -- general key bindings --
 vim.keymap.set('n', '<leader><TAB>', ':b#<cr>', d('prev buffer'))
-vim.keymap.set('n', '<leader>a', telescope.commands, d('commands'))
 
 
 -- buffer key bindings --
@@ -99,6 +101,9 @@ vim.keymap.set('n', '<leader>gd', gitsigns.diffthis, d('diff'))
 vim.keymap.set('n', '<leader>gh', gitsigns.stage_hunk, d('stage hunk'))
 vim.keymap.set('n', '<leader>gH', gitsigns.undo_stage_hunk, d('project commits'))
 
+-- perforce bindings
+vim.keymap.set({ 'n', 'v' }, '<leader>hb', function() vim.cmd('Vp4Annotate') end, d('blame'))
+vim.keymap.set({ 'n', 'v' }, '<leader>he', function() vim.cmd('Vp4Edit') end, d('blame'))
 
 -- toggle bindings
 local lsp_lines = lazy_require('lsp_lines')
@@ -124,11 +129,17 @@ vim.keymap.set('n', '<leader>oR', ':source $MYVIMRC<cr> ', d('Reload nvim'))
 vim.keymap.set('n', '<leader>os', function() vim.api.nvim_cmd({ cmd = 'source', args = { '%' } }, {}) end,
   d('source file'))
 vim.keymap.set('n', '<leader>ol', require('lazy').home, d('Lazy'))
+vim.keymap.set('n', '<leader>od', function()
+  local display_value = vim.fn.system('tmux show-env | sed -n s/^DISPLAY=//p'):gsub('%s+', '')
+  if display_value ~= '' then
+      vim.env.DISPLAY = display_value
+  end
+end, d('set display'))
 
 
 -- buffer navigation keybindings
-vim.keymap.set('n', '[h', gitsigns.prev_hunk, d('previous hunk'))
-vim.keymap.set('n', ']h', gitsigns.next_hunk, d('next hunk'))
+vim.keymap.set('n', '[h', function() gitsigns.nav_hunk('next') end, d('previous hunk'))
+vim.keymap.set('n', ']h', function() gitsigns.nav_hunk('prev') end, d('next hunk'))
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, d('previous diagnostic'))
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, d('next diagnostic'))
 
@@ -154,33 +165,44 @@ vim.keymap.set('n', '<leader>dw', function() vim.print(meta.get_all_breakpoints(
 vim.keymap.set('n', '<leader>dg', meta.toggle_breakpoint_state, d('toggle breakpoint state'))
 
 
-plugins.add_plugin({
-  "anuvyklack/hydra.nvim",
-  event = 'VeryLazy',
-  config = function()
-    local Hydra = require('hydra')
-    Hydra({
-      name = 'debug mode',
-      mode = { 'n', 'x' },
-      body = '<leader>d',
-      config = {
-        hint = {type = 'window', border = 'rounded'},
-        color = 'pink',
-      },
-      heads = {
-        { 'c', dap.continue,{ desc = 'continue' } },
-        { 'n', dap.step_over,{ desc = 'step over' } },
-        { 's', dap.step_into,{ desc = 'step into' } },
-        { 'o', dap.step_out, { desc = 'step out' } },
-        { 'u', dap.up,{ desc = 'stack up' } },
-        { 'd', dap.down,{ desc = 'stack down' } },
-        { 'D', function() dap.disconnect({ terminateDebuggee = false }) end, { exit = true, desc = 'disconnect' } },
-        { 't', dap.run_to_cursor,{ desc = 'run to cursor' } },
-        { 'r', debug_config.toggle_dap_repl, { desc = 'repl', exit = true } },
-        { 'T', dap.terminate, { desc = 'terminate', exit = true } },
-        { 'f', debug_config.toggle_frames_widget,{ desc = 'current frames' } },
-        { 'q', nil, { exit = true, desc = 'exit mode' } },
-      }
-    })
-  end
-})
+--plugins.add_plugin({
+  --"nvimtools/hydra.nvim",
+  --config = function()
+    --local Hydra = require('hydra')
+    --Hydra({
+      --name = 'debug mode',
+      --mode = { 'n', 'x' },
+      --body = '<leader>d',
+      --config = {
+        --hint = {type = 'window', border = 'rounded'},
+        --color = 'pink',
+      --},
+      --heads = {
+        --{ 'c', dap.continue,{ desc = 'continue' } },
+        --{ 'n', dap.step_over,{ desc = 'step over' } },
+        --{ 's', dap.step_into,{ desc = 'step into' } },
+        --{ 'o', dap.step_out, { desc = 'step out' } },
+        --{ 'u', dap.up,{ desc = 'stack up' } },
+        --{ 'd', dap.down,{ desc = 'stack down' } },
+        --{ 'D', function() dap.disconnect({ terminateDebuggee = false }) end, { exit = true, desc = 'disconnect' } },
+        --{ 't', dap.run_to_cursor,{ desc = 'run to cursor' } },
+        --{ 'r', debug_config.toggle_dap_repl, { desc = 'repl', exit = true } },
+        --{ 'T', dap.terminate, { desc = 'terminate', exit = true } },
+        --{ 'f', debug_config.toggle_frames_widget,{ desc = 'current frames' } },
+        --{ 'q', nil, { exit = true, desc = 'exit mode' } },
+      --}
+    --})
+  --end
+--})
+
+vim.keymap.set({ 'n', 'x' }, '<leader>dc', dap.continue, d('continue'))
+vim.keymap.set({ 'n', 'x' }, '<leader>dn', dap.step_over, d('step over'))
+vim.keymap.set({ 'n', 'x' }, '<leader>ds', dap.step_into, d('step into'))
+vim.keymap.set({ 'n', 'x' }, '<leader>do', dap.step_out, d('step out'))
+vim.keymap.set({ 'n', 'x' }, '<leader>du', dap.up, d('stack up'))
+vim.keymap.set({ 'n', 'x' }, '<leader>dd', dap.down, d('stack down'))
+vim.keymap.set({ 'n', 'x' }, '<leader>dD', function() dap.disconnect({ terminateDebuggee = false }) end, d('disconnect'))
+vim.keymap.set({ 'n', 'x' }, '<leader>dt', dap.run_to_cursor, d('run to cursor'))
+vim.keymap.set({ 'n', 'x' }, '<leader>dr', debug_config.toggle_dap_repl, d('repl'))
+vim.keymap.set({ 'n', 'x' }, '<leader>dT', dap.terminate, d('terminate'))
+vim.keymap.set({ 'n', 'x' }, '<leader>df', debug_config.toggle_frames_widget, d('current frames'))

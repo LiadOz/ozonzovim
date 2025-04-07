@@ -77,7 +77,6 @@ plugins.add_plugin({
         },
       },
     })
-    lspconfig.tsserver.setup {}
     lspconfig.tailwindcss.setup {}
     lspconfig.rust_analyzer.setup {}
     lspconfig.clangd.setup {}
@@ -85,12 +84,8 @@ plugins.add_plugin({
   dependencies = {
     { "williamboman/mason.nvim", opts = {} },
     {
-      "folke/neodev.nvim",
-      opts = {
-        override = function(_, library)
-          library.plugins = true -- enable plugins for all lua projects since I only use lua for plugins
-        end
-      }
+      "folke/lazydev.nvim", -- should move to https://github.com/folke/lazydev.nvim after nvim 0.10
+      opts = {},
     },
     {
       "williamboman/mason-lspconfig.nvim",

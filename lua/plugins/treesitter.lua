@@ -4,7 +4,8 @@ plugins.add_plugin({
   'nvim-treesitter/nvim-treesitter',
   event = { "BufReadPost", "BufNewFile" },
   dependencies = {
-    "nvim-treesitter/nvim-treesitter-context"
+    "nvim-treesitter/nvim-treesitter-context",
+    "nvim-treesitter/nvim-treesitter-textobjects",
   },
   config = function()
     require('nvim-dap-repl-highlights').setup() -- must be setup before nvim-treesitter
@@ -57,5 +58,21 @@ plugins.add_plugin({
 plugins.add_plugin({
   "nvim-treesitter/nvim-treesitter-context",
   opts = {},
-  lazy = true
+  lazy = true,
+})
+
+-- TODO
+plugins.add_plugin({
+  "nvim-treesitter/nvim-treesitter-textobjects",
+  --opts = {
+    --textobjects = {
+      --select = {
+        --enable = true,
+        --lookahead = true,
+        --keymaps = {
+        --},
+      --}
+    --}
+  --},
+  lazy = true,
 })

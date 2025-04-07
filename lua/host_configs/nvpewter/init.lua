@@ -19,6 +19,26 @@ function M.pre_plugin_setup()
       end
     end
   })
+  --plugins.add_plugin({
+    --"Exafunction/codeium.nvim",
+    --dependencies = {
+        --"nvim-lua/plenary.nvim",
+        --"hrsh7th/nvim-cmp",
+    --},
+    --config = function()
+        --require("codeium").setup({
+          --api = {
+             --host = "codeium-poc.hwinf-scm-aws.nvidia.com",
+             --path = "_route/api_server",
+             --portal_url = "codeium-poc.hwinf-scm-aws.nvidia.com",
+          --},
+          --enterprise_mode = true,
+          --virtual_text = {
+            --enabled = true,
+          --}
+        --})
+    --end
+  --})
   -- one day
   --plugins.add_plugin({
     --"yetone/avante.nvim",
